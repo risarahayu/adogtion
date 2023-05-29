@@ -18604,3 +18604,8 @@ textarea.form-control-lg {
 .bi-wikipedia::before {
   content: "\f8cc";
 }
+
+.adogtion-navbar {
+  background-color: #BD1A8D;
+  color: white;
+}

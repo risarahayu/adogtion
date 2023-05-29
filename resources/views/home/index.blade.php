@@ -11,5 +11,6 @@
 
 @section('scripts')
   $(function() {
+    
   })
 @endsection
