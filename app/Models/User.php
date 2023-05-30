@@ -37,4 +37,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function userContacts()
+    {
+        return $this->hasOne(UserContact::class);
+    }
+
+    public function vets()
+    {
+        return $this->hasMany(Vet::class);
+    }
+
+    public function adoptions()
+    {
+        return $this->hasMany(Adoption::class);
+    }
 }
