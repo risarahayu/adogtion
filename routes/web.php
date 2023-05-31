@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home.index');
+// Landing page
+Route::get('/', function () { return view('home.index'); });
+
+
+Route::namespace('App\Http\Controllers')->group(function () {
+    // Dashboard
+    Route::get('/home', 'HomeController@index')->name('home');
+
+    // Vets
+    Route::resource('vets', 'VetController');
 });
 
+// User auth
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

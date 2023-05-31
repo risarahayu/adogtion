@@ -16,6 +16,9 @@ class VetController extends Controller
     public function index()
     {
         //
+        $vets = Vet::all();
+
+        return view('vets.index', compact('vets'));
     }
 
     /**
@@ -26,6 +29,8 @@ class VetController extends Controller
     public function create()
     {
         //
+        $vets = Vet::all();
+        return view('vets.create', compact('vets'));
     }
 
     /**
@@ -36,7 +41,28 @@ class VetController extends Controller
      */
     public function store(StoreVetRequest $request)
     {
-        //
+        // Validasi data yang diterima dari request
+        $validatedData = $request->validated();
+
+        // Buat objek Vet baru dengan data yang valid
+        $vet = new Vet();
+        $vet->area = $validatedData['area'];
+        $vet->name = $validatedData['name'];
+        $vet->telephone = $validatedData['telephone'];
+        $vet->whatsapp = $validatedData['whatsapp'];
+        $vet->day_open = $validatedData['day_open'];
+        $vet->day_close = $validatedData['day_close'];
+        $vet->hour_open = $validatedData['hour_open'];
+        $vet->hour_close = $validatedData['hour_close'];
+        $vet->fullday = $request->has('fullday'); // Cek apakah checkbox 'fullday' di-check
+
+        dd($vet);
+
+        // Simpan objek Vet ke database
+        $vet->save();
+
+        // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
+        return redirect()->route('vets.index')->with('success', 'Vet has been created successfully.');
     }
 
     /**
