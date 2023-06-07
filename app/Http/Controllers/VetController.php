@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
+// Vets
 use App\Models\Vet;
 use App\Http\Requests\StoreVetRequest;
 use App\Http\Requests\UpdateVetRequest;
+
+// Areas
+use App\Models\Area;
+use App\Http\Requests\StoreAreaRequest;
 
 class VetController extends Controller
 {
@@ -28,9 +35,9 @@ class VetController extends Controller
      */
     public function create()
     {
-        //
         $vets = Vet::all();
-        return view('vets.create', compact('vets'));
+        $areas = Area::all();
+        return view('vets.create', compact('vets', 'areas'));
     }
 
     /**
@@ -41,28 +48,38 @@ class VetController extends Controller
      */
     public function store(StoreVetRequest $request)
     {
-        // Validasi data yang diterima dari request
-        $validatedData = $request->validated();
-
-        // Buat objek Vet baru dengan data yang valid
-        $vet = new Vet();
-        $vet->area = $validatedData['area'];
-        $vet->name = $validatedData['name'];
-        $vet->telephone = $validatedData['telephone'];
-        $vet->whatsapp = $validatedData['whatsapp'];
-        $vet->day_open = $validatedData['day_open'];
-        $vet->day_close = $validatedData['day_close'];
-        $vet->hour_open = $validatedData['hour_open'];
-        $vet->hour_close = $validatedData['hour_close'];
-        $vet->fullday = $request->has('fullday'); // Cek apakah checkbox 'fullday' di-check
-
-        dd($vet);
-
-        // Simpan objek Vet ke database
-        $vet->save();
-
-        // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
-        return redirect()->route('vets.index')->with('success', 'Vet has been created successfully.');
+        try {
+            DB::transaction(function () use ($request) {
+                // Simpan area terlebih dahulu
+                $area = new Area();
+                $area->name = $request->input('area');
+                $area->save();
+    
+                // Validasi data yang diterima dari request
+                $validatedData = $request->validated();
+        
+                // Buat objek Vet baru dengan data yang valid
+                $vet = new Vet();
+                // $vet->area_id = $area->id;
+                $vet->name = $validatedData['name'];
+                $vet->telephone = $validatedData['telephone'];
+                $vet->whatsapp = $validatedData['whatsapp'];
+                $vet->day_open = $validatedData['day_open'];
+                $vet->day_close = $validatedData['day_close'];
+                $vet->hour_open = $validatedData['hour_open'];
+                $vet->hour_close = $validatedData['hour_close'];
+                $vet->fullday = $request->has('fullday'); // Cek apakah checkbox 'fullday' di-check
+        
+                // Simpan objek Vet ke database
+                $vet->save();
+            });
+    
+            // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
+            return redirect()->route('vets.index')->with('success', 'Vet has been created successfully.');
+        } catch (\Exception $e) {
+            // Tangani error
+            return redirect()->route('vets.index')->with('error', 'Failed to create Vet. Please try again.');
+        };
     }
 
     /**

@@ -15,7 +15,11 @@
               <label for="area" class="col-md-4 col-form-label text-md-end">{{ __('Area') }}</label>
 
               <div class="col-md-6">
-                <input id="area" type="text" class="form-control" name="area" value="{{ old('area') }}" required autocomplete="area" autofocus>
+                <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
+                  @foreach($areas as $area)
+                    <option value="{{ $area->id }}">{{ $area->name }}</option>
+                  @endforeach
+                </select>
 
                 @error('area')
                   <span class="invalid-feedback" role="alert">
