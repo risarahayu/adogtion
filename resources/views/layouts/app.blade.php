@@ -32,8 +32,6 @@
     <!-- Include your footer content here -->
   </footer>
 
-  <script>
-    @yield('scripts')
-  </script>
+  @yield('scripts')
 </body>
 </html>

@@ -11,7 +11,6 @@ class Vet extends Model
 
     protected $fillable = [
         'user_id', 'area_id', 'name', 'telephone', 'whatsapp', 
-        'day_open', 'day_close', 'hour_open', 'hour_close', 'fullday',
     ];
 
     public function user()

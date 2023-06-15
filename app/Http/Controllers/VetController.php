@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Debugbar;
 use Illuminate\Support\Facades\DB;
 
 // Vets
@@ -12,6 +13,10 @@ use App\Http\Requests\UpdateVetRequest;
 // Areas
 use App\Models\Area;
 use App\Http\Requests\StoreAreaRequest;
+
+// Areas
+use App\Models\Schedule;
+use App\Http\Requests\StoreScheduleRequest;
 
 class VetController extends Controller
 {
@@ -50,6 +55,7 @@ class VetController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
+                $user = auth()->user();
                 // Simpan area terlebih dahulu
                 $area = new Area();
                 $area->name = $request->input('area');
@@ -60,25 +66,33 @@ class VetController extends Controller
         
                 // Buat objek Vet baru dengan data yang valid
                 $vet = new Vet();
-                // $vet->area_id = $area->id;
+                dd($user);
+                $vet->user_id = $user->id;
+                $vet->area_id = $area->id;
                 $vet->name = $validatedData['name'];
                 $vet->telephone = $validatedData['telephone'];
                 $vet->whatsapp = $validatedData['whatsapp'];
-                $vet->day_open = $validatedData['day_open'];
-                $vet->day_close = $validatedData['day_close'];
-                $vet->hour_open = $validatedData['hour_open'];
-                $vet->hour_close = $validatedData['hour_close'];
-                $vet->fullday = $request->has('fullday'); // Cek apakah checkbox 'fullday' di-check
-        
-                // Simpan objek Vet ke database
                 $vet->save();
+
+
+                // Simpan jadwal (schedules) ke dalam tabel "schedules"
+                // foreach ($validatedData['schedule'] as $day => $schedule) {
+                //     $scheduleModel = new Schedule();
+                //     $scheduleModel->vet_id = $vet->id;
+                //     $scheduleModel->day_name = $day;
+                //     $scheduleModel->open_hour = $schedule['open_hour'];
+                //     $scheduleModel->close_hour = $schedule['close_hour'];
+                //     $scheduleModel->fullday = isset($schedule['fullday']) ? true : false;
+                //     $scheduleModel->save();
+                // }
             });
     
             // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
             return redirect()->route('vets.index')->with('success', 'Vet has been created successfully.');
         } catch (\Exception $e) {
             // Tangani error
-            return redirect()->route('vets.index')->with('error', 'Failed to create Vet. Please try again.');
+            dd($e);
+            return redirect()->route('vets.create')->with('error', 'Failed to create Vet. Please try again.');
         };
     }
 

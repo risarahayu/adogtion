@@ -25,28 +25,19 @@ class StoreVetRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             // Use this for real validation
-            // 'area_id' => ['required', 'integer', Rule::exists('areas', 'id')],
-            // 'name' => 'required|string|max:255',
-            // 'telephone' => 'nullable|required|string|max:20',
-            // 'whatsapp' => 'nullable|string|max:20',
-            // 'day_open' => 'required|integer',
-            // 'day_close' => 'required|integer',
-            // 'hour_open' => 'required|date_format:H:i',
-            // 'hour_close' => 'required|date_format:H:i|after:hour_open',
-            // 'fullday' => 'boolean',
-
-            // For testing purposes
-            'area' => 'required',
-            'name' => 'required',
-            'telephone' => 'nullable|required',
-            'whatsapp' => 'nullable|required',
-            'day_open' => 'required',
-            'day_close' => 'required',
-            'hour_open' => 'required',
-            'hour_close' => 'required',
-            'fullday' => 'boolean',
+            'area' => 'required|string',
+            'name' => 'required|string|max:255',
+            'telephone' => 'nullable|string|max:20',
+            'whatsapp' => 'nullable|string|max:20',
+            'schedule.*.day_name' => 'required|string',
+            'schedule.*.open_day' => 'nullable',
+            'schedule.*.open_hour' => 'required_if:schedule.*.open_day,true',
+            'schedule.*.close_hour' => 'required_if:schedule.*.open_day,true',
+            'schedule.*.fullday' => 'nullable',
         ];
+        
+        return $rules;
     }
 }

@@ -19727,6 +19727,13 @@ textarea.form-control-lg {
   content: "\f8cc";
 }
 
+#schedule_table {
+  display: none;
+}
+#schedule_table.active {
+  display: block;
+}
+
 .adogtion-navbar {
   background-color: #BD1A8D;
   color: white;

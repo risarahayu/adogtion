@@ -22,11 +22,10 @@ class CreateVetsTable extends Migration
             $table->string('name');
             $table->string('telephone')->nullable();
             $table->string('whatsapp')->nullable();
-            $table->string('day_open');
-            $table->string('day_close');
-            $table->string('hour_open');
-            $table->string('hour_close');
-            $table->boolean('fullday');
+            // $table->string('day_open');
+            // $table->string('hour_open');
+            // $table->string('hour_close');
+            // $table->boolean('fullday');
             $table->timestamps();
         });
     }
