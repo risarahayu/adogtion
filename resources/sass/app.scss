@@ -21,3 +21,54 @@ $base-color: #BD1A8D;
   background-color: $base-color;
   color: white;
 }
+
+.navbar-nav { gap: 10px; }
+.nav-item {
+  .nav-link {
+    height: 100%;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    padding-bottom: 5px;
+    transition: all 0.3s ease-in-out;
+    i { font-size: 20px; }
+    img { height: 20px; }
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background-color: white;
+      transition: width 0.3s ease-in-out;
+    }
+    &:hover::before {
+      width: 100%;
+    }
+  }
+}
+
+.dashboard-nodata-card {
+  &:hover {
+    background-color: darken($color: white, $amount: 10);
+  }
+  .card-body {
+    min-height: 250px;
+  }
+}
+
+.btn-custom-submit {
+  background-color: $base-color;
+  color: white;
+  &:hover {
+    background-color: darken($color: $base-color, $amount: 2);
+    color: white
+  }
+  &:active {
+    border-color: $base-color !important;
+    color: $base-color !important;
+  }
+}

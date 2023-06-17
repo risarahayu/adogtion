@@ -19775,3 +19775,57 @@ textarea.form-control-lg {
   background-color: #BD1A8D;
   color: white;
 }
+
+.navbar-nav {
+  gap: 10px;
+}
+
+.nav-item .nav-link {
+  height: 100%;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  padding-bottom: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.nav-item .nav-link i {
+  font-size: 20px;
+}
+.nav-item .nav-link img {
+  height: 20px;
+}
+.nav-item .nav-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease-in-out;
+}
+.nav-item .nav-link:hover::before {
+  width: 100%;
+}
+
+.dashboard-nodata-card:hover {
+  background-color: #e6e6e6;
+}
+.dashboard-nodata-card .card-body {
+  min-height: 250px;
+}
+
+.btn-custom-submit {
+  background-color: #BD1A8D;
+  color: white;
+}
+.btn-custom-submit:hover {
+  background-color: #b41986;
+  color: white;
+}
+.btn-custom-submit:active {
+  border-color: #BD1A8D !important;
+  color: #BD1A8D !important;
+}

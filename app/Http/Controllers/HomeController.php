@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StrayDog;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard.index');
+        $user = auth()->user();
+        $stray_dogs = StrayDog::all();
+        $adoptions = $user->adoptions();
+        return view('dashboard.index', compact('user', 'stray_dogs', 'adoptions'));
     }
 }

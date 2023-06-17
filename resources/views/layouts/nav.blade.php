@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark shadow-sm adogtion-navbar">
   <div class="container">
     <a class="navbar-brand" href="{{ url('/') }}">
-      {{ config('app.name', 'Laravel') }}
+      <img  src="{{ asset('images/mp_logo_big.svg') }}" alt="mp" width="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
       <span class="navbar-toggler-icon"></span>
@@ -28,9 +28,22 @@
             </li>
           @endif
         @else
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('stray_dogs.index') }}">{{ __('View List') }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('stray_dogs.create') }}">
+              {{ __('Add New') }}
+              <img src="{{ asset('images/paw.svg') }}" alt="SVG Image">
+            </a>
+          </li>
           <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <a id="navbarDropdown" class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
               {{ Auth::user()->name }}
+              <i class="bi bi-person-circle"></i>
             </a>
 
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
