@@ -8,8 +8,10 @@
         <div class="card-header">{{ __('Stray Dog') }}</div>
 
         <div class="card-body">
-          <form method="POST" action="{{ route('stray_dogs.store') }}">
+          <form method="POST" action="{{ route('stray_dogs.store') }}" enctype="multipart/form-data">
             @csrf
+
+            <input type="hidden" name="user_id" value="{{ $user->id }}">
 
             <div class="row mb-3">
               <label for="dog_type" class="col-md-4 col-form-label">{{ __('Dog Type') }}</label>
@@ -83,18 +85,30 @@
               </div>
             </div>
 
+            <div class="row mb-3">
+              <label for="images" class="col-md-4 col-form-label">{{ __('Pictures') }}</label>
+              <div class="col-md-8">
+                <input id="images" type="file" class="form-control @error('images') is-invalid @enderror" name="images[]" required autocomplete="images" multiple>
+                @error('images')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
+              </div>
+            </div>
+
             <!-- AREA -->
             <div class="row mb-3">
-              <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
+              <label for="area_id" class="col-md-4 col-form-label">{{ __('Area') }}</label>
 
               <div class="col-md-8">
-                <select class="form-select select2 @error('area') is-invalid @enderror" name="area">
+                <select class="form-select select2 @error('area_id') is-invalid @enderror" name="area_id">
                   @foreach($areas as $area)
                     <option value="{{ $area->id }}">{{ $area->name }}</option>
                   @endforeach
                 </select>
 
-                @error('area')
+                @error('area_id')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>

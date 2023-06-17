@@ -1,0 +1,34 @@
+body.auth-layout {
+  background-color: #BD1A8D;
+}
+
+section#auth-section {
+  color: white;
+  a { color: white !important; }
+  .container {
+    width: 100vw;
+    min-height: 100vh;
+    .row {
+      height: 100%;
+    }
+  }
+  .auth-form {
+    padding: 0 100px;
+  }
+}
+
+.invalid-feedback {
+  color: white !important;
+}
+
+.btn-auth-submit {
+  color: #BD1A8D !important;
+  font-weight: bold !important;
+  width: 100%;
+}
+
+@media (max-width: 575.98px) { 
+  .auth-form {
+    padding: 0 50px !important;
+  }
+}

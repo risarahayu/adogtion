@@ -26,7 +26,7 @@ class CreateStrayDogsTable extends Migration
             $table->string('size');
             $table->text('description');
             $table->text('map_link');
-            $table->text('image');
+            // $table->text('pictures')->nullable();
             $table->timestamps();
         });
     }

@@ -10,8 +10,8 @@ class StrayDog extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'area_id', 'dog_type', 'color', 'temperament', 
-        'gender', 'size', 'description', 'map_link', 'image',
+        'user_id', 'area_id', 'dog_type', 'color', 'temperament',
+        'gender', 'size', 'description', 'map_link',
     ];
 
     public function user()
@@ -27,5 +27,10 @@ class StrayDog extends Model
     public function adoptions()
     {
         return $this->hasMany(Adoption::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\StrayDog;
+use App\Models\Image;
 use App\Http\Requests\StoreStrayDogRequest;
 use App\Http\Requests\UpdateStrayDogRequest;
 
@@ -31,9 +35,10 @@ class StrayDogController extends Controller
      */
     public function create()
     {
+        $user = auth()->user();
         $stray_dogs = StrayDog::all();
         $areas = Area::all();
-        return view('stray_dogs.create', compact('stray_dogs', 'areas'));
+        return view('stray_dogs.create', compact('user', 'stray_dogs', 'areas'));
     }
 
     /**
@@ -44,7 +49,28 @@ class StrayDogController extends Controller
      */
     public function store(StoreStrayDogRequest $request)
     {
-        //
+        try {
+            DB::transaction(function () use ($request) {
+                $strayDog = StrayDog::create($request->validated());
+                
+                if ($request->hasFile('images')) {
+                    foreach ($request->file('images') as $image) {
+                        $filename = $image->getClientOriginalName();
+                        $path = $image->storeAs('public/stray_dog_images', $filename);
+                        $publicPath = Storage::url($path);
+                
+                        $imageModel = new Image();
+                        $imageModel->filename = $publicPath;
+                        $strayDog->images()->save($imageModel);
+                    }
+                }
+            });
+
+            return redirect()->route('stray_dogs.index')->with('success', 'Stray Dog has been created successfully.');
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->route('stray_dogs.create')->with('error', 'Failed to create Stray Dog. Please try again.');
+        };
     }
 
     /**

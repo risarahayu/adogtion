@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container">
+  @foreach($stray_dogs as $stray_dog)
+    <div>
+      <h2>{{ $stray_dog->name }}</h2>
+      <p>Description: {{ $stray_dog->description }}</p>
+
+      @foreach($stray_dog->images as $image)
+        <img class="img-fluid" src="{{ asset($image->filename) }}" alt="Stray Dog Image">
+      @endforeach
+    </div>
+  @endforeach
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
