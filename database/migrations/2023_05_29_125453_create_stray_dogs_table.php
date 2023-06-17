@@ -19,7 +19,7 @@ class CreateStrayDogsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('area_id');
             $table->foreign('area_id')->references('id')->on('areas');
-            $table->string('animal_type');
+            $table->string('dog_type');
             $table->string('color');
             $table->string('temperament');
             $table->string('gender');

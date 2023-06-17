@@ -33,7 +33,7 @@
               <label for="name" class="col-md-4 col-form-label">{{ __('Name') }}</label>
 
               <div class="col-md-8">
-                <input id="name" type="name" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name">
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name">
 
                 @error('name')
                   <span class="invalid-feedback" role="alert">
@@ -47,7 +47,7 @@
               <label for="telephone" class="col-md-4 col-form-label">{{ __('Telephone') }}</label>
 
               <div class="col-md-8">
-                <input id="telephone" type="telephone" class="form-control @error('telephone') is-invalid @enderror" name="telephone" required autocomplete="telephone">
+                <input id="telephone" type="tel" class="form-control @error('telephone') is-invalid @enderror" name="telephone" required autocomplete="telephone">
 
                 @error('telephone')
                   <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@
               <label for="whatsapp" class="col-md-4 col-form-label">{{ __('whatsapp') }}</label>
 
               <div class="col-md-8">
-                <input id="whatsapp" type="whatsapp" class="form-control @error('whatsapp') is-invalid @enderror" name="whatsapp" required autocomplete="whatsapp">
+                <input id="whatsapp" type="tel" class="form-control @error('whatsapp') is-invalid @enderror" name="whatsapp" required autocomplete="whatsapp">
 
                 @error('whatsapp')
                   <span class="invalid-feedback" role="alert">

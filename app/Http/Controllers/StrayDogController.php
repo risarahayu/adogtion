@@ -6,6 +6,10 @@ use App\Models\StrayDog;
 use App\Http\Requests\StoreStrayDogRequest;
 use App\Http\Requests\UpdateStrayDogRequest;
 
+// Areas
+use App\Models\Area;
+use App\Http\Requests\StoreAreaRequest;
+
 class StrayDogController extends Controller
 {
     /**
@@ -15,7 +19,9 @@ class StrayDogController extends Controller
      */
     public function index()
     {
-        //
+        $stray_dogs = StrayDog::all();
+
+        return view('stray_dogs.index', compact('stray_dogs'));
     }
 
     /**
@@ -25,7 +31,9 @@ class StrayDogController extends Controller
      */
     public function create()
     {
-        //
+        $stray_dogs = StrayDog::all();
+        $areas = Area::all();
+        return view('stray_dogs.create', compact('stray_dogs', 'areas'));
     }
 
     /**

@@ -24,6 +24,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // Vets
     Route::resource('vets', 'VetController');
+
+    // Stray Dogs
+    Route::resource('stray_dogs', 'StrayDogController');
 });
 
 // User auth

@@ -18,8 +18,8 @@ class CreateSchedulesTable extends Migration
             $table->unsignedBigInteger('vet_id');
             $table->foreign('vet_id')->references('id')->on('vets');
             $table->string('day_name');
-            $table->time('open_hour');
-            $table->time('close_hour');
+            $table->time('open_hour')->nullable();
+            $table->time('close_hour')->nullable();
             $table->boolean('fullday');
             $table->timestamps();
         });

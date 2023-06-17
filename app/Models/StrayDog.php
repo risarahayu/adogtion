@@ -10,7 +10,7 @@ class StrayDog extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'area_id', 'animal_type', 'color', 'temperament', 
+        'user_id', 'area_id', 'dog_type', 'color', 'temperament', 
         'gender', 'size', 'description', 'map_link', 'image',
     ];
 
