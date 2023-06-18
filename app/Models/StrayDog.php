@@ -29,6 +29,11 @@ class StrayDog extends Model
         return $this->hasMany(Adoption::class);
     }
 
+    public function rescue()
+    {
+        return $this->hasOne(Adoption::class);
+    }
+
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
