@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\StrayDog;
 use App\Models\Image;
+use App\Models\Vet;
 use App\Http\Requests\StoreStrayDogRequest;
 use App\Http\Requests\UpdateStrayDogRequest;
 
@@ -81,7 +82,15 @@ class StrayDogController extends Controller
      */
     public function show(StrayDog $strayDog)
     {
-        //
+        $user = auth()->user();
+        $stray_dog = $strayDog;
+        $vets = Vet::whereHas('area', function ($query) use ($stray_dog) {
+            $query->where('id', $stray_dog->area_id);
+        })->get();
+        if ($vets->isEmpty()) {
+            $vets = Vet::all();
+        }
+        return view('stray_dogs.show', compact('user', 'stray_dog', 'vets'));
     }
 
     /**

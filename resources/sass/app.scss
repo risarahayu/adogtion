@@ -17,6 +17,24 @@
 // Adogtion variables
 $base-color: #BD1A8D;
 
+.color-mp { color: $base-color; }
+
+a {
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: black;
+  }
+  &.with-link {
+    color: #0d6efd;
+    text-decoration: underline;
+    &:hover {
+      color: black;
+      color: #0d6efd;
+    }
+  }
+}
+
 .adogtion-navbar {
   background-color: $base-color;
   color: white;
@@ -71,4 +89,37 @@ $base-color: #BD1A8D;
     border-color: $base-color !important;
     color: $base-color !important;
   }
+}
+
+.dog-list {
+  .dog-picture {
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    img {
+      height: inherit;
+      width: 100%;
+      position: absolute;
+      object-fit: cover;
+    }
+  }
+}
+
+.dog-show {
+  .dog-picture {
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    img {
+      height: inherit;
+      width: 100%;
+      position: absolute;
+      object-fit: cover;
+    }
+  }
+}
+
+.dtl-icon {
+  font-size: 1.8rem;
+  height: 1.8rem;
 }

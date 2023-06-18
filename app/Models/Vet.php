@@ -22,4 +22,9 @@ class Vet extends Model
     {
         return $this->belongsTo(Area::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }

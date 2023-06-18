@@ -7,7 +7,7 @@
   <div class="container d-flex justify-content-center align-items-center">
     <div class="row justify-content-center align-items-center">
       <div class="col-lg-6">
-        <img class="img-fluid" src="{{ asset('images/mp_logo_big.svg') }}" alt="Example Image">
+        <img class="img-fluid" src="{{ asset('images/mp_logo_big.svg') }}">
       </div>
       <div class="col-lg-6">  
         <h2 class="text-center mb-4 fw-bold">EVERY RESCUE MISSION IS POSSIBLE WHERE WE WORK TOGETHER!</h2>
