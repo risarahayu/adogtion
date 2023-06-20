@@ -31,7 +31,7 @@ class StrayDog extends Model
 
     public function rescue()
     {
-        return $this->hasOne(Adoption::class);
+        return $this->hasOne(Rescue::class);
     }
 
     public function images()

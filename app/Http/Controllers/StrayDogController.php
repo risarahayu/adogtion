@@ -17,6 +17,10 @@ use App\Http\Requests\StoreAreaRequest;
 
 class StrayDogController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -84,11 +88,23 @@ class StrayDogController extends Controller
     {
         $user = auth()->user();
         $stray_dog = $strayDog;
-        $vets = Vet::whereHas('area', function ($query) use ($stray_dog) {
-            $query->where('id', $stray_dog->area_id);
-        })->get();
-        if ($vets->isEmpty()) {
-            $vets = Vet::all();
+        $vets = [];
+        $rescueVet = null;
+
+        if ($stray_dog->rescue()->exists() && $stray_dog->rescue->status == 'rescued') {
+            $rescueVet = $stray_dog->rescue->vet;
+        }
+
+        if ($rescueVet) {
+            $vets[] = $rescueVet;
+        } else {
+            $vets = Vet::whereHas('area', function ($query) use ($stray_dog) {
+                $query->where('id', $stray_dog->area_id);
+            })->get();
+
+            if ($vets->isEmpty()) {
+                $vets = Vet::all();
+            }
         }
         return view('stray_dogs.show', compact('user', 'stray_dog', 'vets'));
     }

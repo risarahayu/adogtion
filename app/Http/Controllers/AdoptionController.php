@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Adoption;
 use App\Http\Requests\StoreAdoptionRequest;
 use App\Http\Requests\UpdateAdoptionRequest;
+use Illuminate\Http\Request;
 
 class AdoptionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -68,9 +73,12 @@ class AdoptionController extends Controller
      * @param  \App\Models\Adoption  $adoption
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAdoptionRequest $request, Adoption $adoption)
+    public function update(Request $request, Adoption $adoption)
     {
-        //
+        $stray_dog = $adoption->stray_dog;
+        $adoption->update(['status' => 'accepted']);
+        $stray_dog->adoptions()->where('status', 'pending')->update(['status' => 'declined']);
+        return redirect()->route('stray_dogs.show', ['stray_dog' => $stray_dog])->with('success', 'Success');
     }
 
     /**

@@ -13,7 +13,7 @@ class StoreRescueRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreRescueRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'stray_dog_id' => 'required',
+            'vet_id' => 'required',
         ];
     }
 }

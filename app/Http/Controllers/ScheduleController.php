@@ -8,6 +8,10 @@ use App\Http\Requests\UpdateScheduleRequest;
 
 class ScheduleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

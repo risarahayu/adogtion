@@ -19,6 +19,10 @@ use App\Http\Requests\StoreScheduleRequest;
 
 class VetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

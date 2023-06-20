@@ -32,8 +32,15 @@
             <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('stray_dogs.index') }}">{{ __('View List') }}</a>
+            <a class="nav-link" href="{{ route('stray_dogs.index') }}">{{ __('Dog List') }}</a>
           </li>
+          @if (auth()->user()->administrator)
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('vets.index') }}">
+                {{ __('Vet List') }}
+              </a>
+            </li>
+          @endif
           <li class="nav-item">
             <a class="nav-link" href="{{ route('stray_dogs.create') }}">
               {{ __('Add New') }}

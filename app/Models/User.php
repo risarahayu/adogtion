@@ -38,7 +38,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function userContacts()
+    public function userContact()
     {
         return $this->hasOne(UserContact::class);
     }

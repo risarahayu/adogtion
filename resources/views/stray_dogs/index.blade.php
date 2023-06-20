@@ -49,7 +49,7 @@
                   <div class="col-5 d-flex align-items-center">
                     <button type="button" class="btn btn-custom-submit w-100">
                       @if($stray_dog->rescue()->exists())
-                        {{ $stray_dog->rescue()->status }}
+                        {{ ucfirst($stray_dog->rescue->status) }}
                       @else
                         {{ __('Unrescued') }}
                       @endif
