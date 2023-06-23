@@ -32,8 +32,8 @@ class VetController extends Controller
     {
         //
         $vets = Vet::all();
-
-        return view('vets.index', compact('vets'));
+        $areas = Area::all();
+        return view('vets.index', compact('vets', 'areas'));
     }
 
     /**
@@ -60,9 +60,15 @@ class VetController extends Controller
             DB::transaction(function () use ($request) {
                 $user = auth()->user();
                 // Simpan area terlebih dahulu
-                $area = new Area();
-                $area->name = $request->input('area');
-                $area->save();
+                $area_name = $request->input('area');
+                $area = Area::where('name', $area_name)->first();
+                if (optional($area)->exists()) {
+                    $area = $area;
+                } else {
+                    $area = new Area();
+                    $area->name = $request->input('area');
+                    $area->save();
+                }
     
                 // Validasi data yang diterima dari request
                 $validatedData = $request->validated();
@@ -120,7 +126,8 @@ class VetController extends Controller
      */
     public function edit(Vet $vet)
     {
-        //
+        $areas = Area::all();
+        return view('vets.edit', compact('vet', 'areas'));
     }
 
     /**
@@ -132,7 +139,56 @@ class VetController extends Controller
      */
     public function update(UpdateVetRequest $request, Vet $vet)
     {
-        //
+        try {
+            DB::transaction(function () use ($request, $vet) {
+                // Simpan area terlebih dahulu
+                $area_name = $request->input('area');
+                $area = Area::where('name', $area_name)->first();
+                if (optional($area)->exists()) {
+                    $area = $area;
+                } else {
+                    $area = new Area();
+                    $area->name = $request->input('area');
+                    $area->save();
+                }
+        
+                // Validasi data yang diterima dari request
+                $validatedData = $request->validated();
+        
+                // Update data Vet
+                $vet->area_id = $area->id;
+                $vet->name = $validatedData['name'];
+                $vet->telephone = $validatedData['telephone'];
+                $vet->whatsapp = $validatedData['whatsapp'];
+                $vet->save();
+        
+                // Hapus semua jadwal (schedules) terkait dengan Vet
+                $vet->schedules()->delete();
+        
+                // Simpan jadwal baru ke dalam tabel "schedules"
+                foreach ($validatedData['schedule'] as $day => $schedule) {
+                    // Melewati iterasi berikutnya jika 'open_day' tidak terdefinisi
+                    if (!isset($schedule['open_day'])) {
+                        continue;
+                    }
+        
+                    $scheduleModel = new Schedule();
+                    $scheduleModel->vet_id = $vet->id;
+                    $scheduleModel->day_name = $day;
+                    $scheduleModel->open_hour = $schedule['open_hour'];
+                    $scheduleModel->close_hour = $schedule['close_hour'];
+                    $scheduleModel->fullday = isset($schedule['fullday']) ? true : false;
+                    $scheduleModel->save();
+                }
+            });
+        
+            // Redirect ke halaman yang sesuai atau tampilkan pesan sukses
+            return redirect()->route('vets.index')->with('success', 'Vet has been updated successfully.');
+        } catch (\Exception $e) {
+            // Tangani error
+            dd($e);
+            return redirect()->route('vets.edit', $vet->id)->with('error', 'Failed to update Vet. Please try again.');
+        }        
     }
 
     /**
@@ -143,6 +199,8 @@ class VetController extends Controller
      */
     public function destroy(Vet $vet)
     {
-        //
+        $vet->schedules()->delete();
+        $vet->delete();
+        return redirect()->route('vets.index')->with('success', 'Vet has been created successfully.');
     }
 }

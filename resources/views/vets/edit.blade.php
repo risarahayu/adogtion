@@ -8,8 +8,9 @@
         <div class="card-header">{{ __('Vets') }}</div>
 
         <div class="card-body">
-          <form method="POST" action="{{ route('vets.store') }}">
+          <form method="POST" action="{{ route('vets.update', ['vet' => $vet->id]) }}">
             @csrf
+            @method('PUT')
 
             <div class="row mb-3">
               <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
@@ -17,7 +18,7 @@
               <div class="col-md-8">
                 <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
                   @foreach($areas as $area)
-                    <option value="{{ $area->id }}">{{ $area->name }}</option>
+                    <option value="{{ $area->name }}" @if($vet->area == $area) selected @endif>{{ $area->name }}</option>
                   @endforeach
                 </select>
 
@@ -33,7 +34,7 @@
               <label for="name" class="col-md-4 col-form-label">{{ __('Name') }}</label>
 
               <div class="col-md-8">
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name">
+                <input id="name" type="text" value="{{ $vet->name }}" class="form-control @error('name') is-invalid @enderror" name="name" required autocomplete="name">
 
                 @error('name')
                   <span class="invalid-feedback" role="alert">
@@ -47,7 +48,7 @@
               <label for="telephone" class="col-md-4 col-form-label">{{ __('Telephone') }}</label>
 
               <div class="col-md-8">
-                <input id="telephone" type="tel" class="form-control @error('telephone') is-invalid @enderror" name="telephone" required autocomplete="telephone">
+                <input id="telephone" type="number" value="{{ $vet->telephone }}" class="form-control @error('telephone') is-invalid @enderror" name="telephone" required autocomplete="telephone">
 
                 @error('telephone')
                   <span class="invalid-feedback" role="alert">
@@ -61,7 +62,7 @@
               <label for="whatsapp" class="col-md-4 col-form-label">{{ __('whatsapp') }}</label>
 
               <div class="col-md-8">
-                <input id="whatsapp" type="tel" class="form-control @error('whatsapp') is-invalid @enderror" name="whatsapp" required autocomplete="whatsapp">
+                <input id="whatsapp" type="number" value="{{ $vet->whatsapp }}" class="form-control @error('whatsapp') is-invalid @enderror" name="whatsapp" required autocomplete="whatsapp">
 
                 @error('whatsapp')
                   <span class="invalid-feedback" role="alert">
@@ -71,19 +72,21 @@
               </div>
             </div>
 
-            <div class="row mb-3">
-              <label class="col-md-4 col-form-label">{{ __('Schedule') }}</label>
-              <div class="col-md-8">
-                <select class="form-select" id="schedule_template">
-                  <option>{{--Select schedule template--}}</option>
-                  <option value="all">All day</option>
-                  <option value="working">Working Day</option>
-                  <option value="custom">Custom</option>
-                </select> 
+            @if (false)
+              <div class="row mb-3">
+                <label class="col-md-4 col-form-label">{{ __('Schedule') }}</label>
+                <div class="col-md-8">
+                  <select class="form-select" id="schedule_template">
+                    <option>{{--Select schedule template--}}</option>
+                    <option value="all">All day</option>
+                    <option value="working">Working Day</option>
+                    <option value="custom">Custom</option>
+                  </select> 
+                </div>
               </div>
-            </div>
+            @endif
 
-            <div id="schedule_table" class="card mb-3">
+            <div id="schedule_table" class="card mb-3 active">
               <div class="card-body">
                 <table class="table">
                   <thead>
@@ -121,35 +124,48 @@
                       </td>
                     </tr>
                     @foreach(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as $day)
+                    @php
+                      $vet_schedule = optional($vet->schedules()->where('day_name', $day)->first());
+                      $day_opened = !empty($vet_schedule->open_hour) && !empty($vet_schedule->open_hour);
+                    @endphp
                     <tr>
                       <td>
                         <div class="form-check d-flex justify-content-center">
-                          <input name="schedule[{{ $day }}][open_day]" class="form-check-input day-used {{ $day }}" type="checkbox">
+                          <input name="schedule[{{ $day }}][open_day]" class="form-check-input day-used {{ $day }}" 
+                            type="checkbox" @if($day_opened) checked @endif>
                         </div>
                       </td>
-                      <td>
+                      <td @if(!$day_opened) style="opacity: 0.5;" @endif>
                         {{ ucfirst($day) }}
                         <input type="hidden" name="schedule[{{ $day }}][day_name]" value="{{ $day }}">
                       </td>
-                      <td>
-                        <input id="open_hour_{{ $day }}" type="time" class="form-control open-hour @error('schedule.'.$day.'.open_hour') is-invalid @enderror" name="schedule[{{ $day }}][open_hour]" value="{{ old('schedule.'.$day.'.open_hour') }}" autocomplete="off">
+                      <td @if(!$day_opened) style="opacity: 0.5;" @endif>
+                        <input id="open_hour_{{ $day }}" type="time" value="{{ $vet_schedule->open_hour }}" 
+                          class="form-control open-hour @error('schedule.'.$day.'.open_hour') is-invalid @enderror" 
+                          name="schedule[{{ $day }}][open_hour]" value="{{ old('schedule.'.$day.'.open_hour') }}" 
+                          autocomplete="off" @if(!$day_opened) disabled @endif>
                         @error('schedule.'.$day.'.open_hour')
                         <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                       </td>
-                      <td>
-                        <input id="close_hour_{{ $day }}" type="time" class="form-control close-hour @error('schedule.'.$day.'.close_hour') is-invalid @enderror" name="schedule[{{ $day }}][close_hour]" value="{{ old('schedule.'.$day.'.close_hour') }}" autocomplete="off">
+                      <td @if(!$day_opened) style="opacity: 0.5;" @endif>
+                        <input id="close_hour_{{ $day }}" type="time" value="{{ $vet_schedule->close_hour  }}" 
+                          class="form-control close-hour @error('schedule.'.$day.'.close_hour') is-invalid @enderror" 
+                          name="schedule[{{ $day }}][close_hour]" value="{{ old('schedule.'.$day.'.close_hour') }}" 
+                          autocomplete="off" @if(!$day_opened) disabled @endif>
                         @error('schedule.'.$day.'.close_hour')
                         <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                       </td>
-                      <td>
+                      <td @if(!$day_opened) style="opacity: 0.5;" @endif>
                         <div class="form-check d-flex justify-content-center">
-                          <input class="form-check-input fullday" type="checkbox" name="schedule[{{ $day }}][fullday]" id="fullday_{{ $day }}" {{ old('schedule.'.$day.'.fullday') ? 'checked' : '' }}>
+                          <input class="form-check-input fullday" type="checkbox" name="schedule[{{ $day }}][fullday]" 
+                            id="fullday_{{ $day }}" {{ old('schedule.'.$day.'.fullday') || $vet_schedule->fullday ? 'checked' : '' }}
+                            @if(!$day_opened) disabled @endif>
                         </div>
                       </td>
                     </tr>
@@ -178,27 +194,25 @@
 @section('scripts')
   <script>
     $(function() {
+      @if(!empty($vet_schedule->open_hour) && !empty($vet_schedule->open_hour))
+        
+      @endif
       // Tabel Schedule
       // SCHEDULE TEMPLATE CHANGES
       $('#schedule_template').change(function() {
-        if (!$(this).val() == '') {
-          $('#schedule_table').addClass('active');
-          $('.day-used').prop('checked', false);
-          $('.day-used').not(':checked').parents('tr').find('td').css('opacity', '1');
-          $('.day-used').not(':checked').parents('tr').find('td input').prop('disabled', false);
-          if ($(this).val() == 'all') {
-            $('.day-used, #days_used').prop('checked', true);
-          } else if ($(this).val() == 'working') {
-            $('#days_used').prop('checked', false);
-            $('.day-used').not('.saturday, .sunday').prop('checked', true);
-          } else if ($(this).val() == 'custom') {
-            // do something later maybe
-          };
-          $('.day-used').not(':checked').parents('tr').find('td').not(':first-child').css('opacity', '0.5');
-          $('.day-used').not(':checked').parents('tr').find('td:not(:first-child) input').prop('disabled', true);
-        } else {
-          $('#schedule_table').removeClass('active');
+        $('.day-used').prop('checked', false);
+        $('.day-used').not(':checked').parents('tr').find('td').css('opacity', '1');
+        $('.day-used').not(':checked').parents('tr').find('td input').prop('disabled', false);
+        if ($(this).val() == 'all') {
+          $('.day-used, #days_used').prop('checked', true);
+        } else if ($(this).val() == 'working') {
+          $('#days_used').prop('checked', false);
+          $('.day-used').not('.saturday, .sunday').prop('checked', true);
+        } else if ($(this).val() == 'custom') {
+          // do something later maybe
         };
+        $('.day-used').not(':checked').parents('tr').find('td').not(':first-child').css('opacity', '0.5');
+        $('.day-used').not(':checked').parents('tr').find('td:not(:first-child) input').prop('disabled', true);
       });
 
       // WHEN OPEN DAY IS CHECKED

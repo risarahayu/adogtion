@@ -13,7 +13,7 @@ class UpdateVetRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,20 @@ class UpdateVetRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
+            // Use this for real validation
+            'area' => 'required|string',
+            'name' => 'required|string|max:255',
+            'telephone' => 'nullable|string|max:20',
+            'whatsapp' => 'nullable|string|max:20',
+            'schedule.*.day_name' => 'required|string',
+            'schedule.*.open_day' => 'nullable',
+            'schedule.*.open_hour' => 'required_if:schedule.*.open_day,true',
+            'schedule.*.close_hour' => 'required_if:schedule.*.open_day,true',
+            'schedule.*.fullday' => 'nullable',
+        ];
+        
+        return $rules;return [
             //
         ];
     }
