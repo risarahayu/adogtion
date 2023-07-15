@@ -17,7 +17,6 @@
   <div class="container">
     <div class="row">
       @foreach($stray_dogs as $stray_dog)
-      @for ($i = 0; $i < 20; $i++)
         <div class="col-md-4 mb-3">
           <a href="{{ route("stray_dogs.show", ['stray_dog' => $stray_dog->id]) }}">
             <div class="card dog-list">
@@ -47,12 +46,17 @@
                 </div>
                 <div class="row adoption-status">
                   <div class="col-5 d-flex align-items-center">
-                    <button type="button" class="btn btn-custom-submit w-100">
-                      @if($stray_dog->rescue()->exists())
-                        {{ ucfirst($stray_dog->rescue->status) }}
-                      @else
-                        {{ __('Unrescued') }}
-                      @endif
+                    @php
+                      if($stray_dog->rescue()->exists()) {
+                        $dog_status = ucfirst($stray_dog->rescue->status);
+                        $status_style = "";
+                      } else {
+                        $dog_status = 'Unrescued';
+                        $status_style = "background-color: orangered;";
+                      };
+                    @endphp
+                    <button type="button" class="btn btn-custom-submit w-100" style="{{ $status_style }}">
+                      {{ $dog_status }}
                     </button>
                   </div>
                   <div class="col-7">
@@ -64,7 +68,6 @@
             </div>
           </a>
         </div>
-      @endfor
       @endforeach
     </div>
   </div>

@@ -71,10 +71,20 @@ class StrayDogController extends Controller
                 }
             });
 
-            return redirect()->route('stray_dogs.index')->with('success', 'Stray Dog has been created successfully.');
+            return redirect()->route('stray_dogs.index')->with([
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'Stray dog has been add successfully',
+                ]
+            ]);
         } catch (\Exception $e) {
             dd($e);
-            return redirect()->route('stray_dogs.create')->with('error', 'Failed to create Stray Dog. Please try again.');
+            return redirect()->route('stray_dogs.create')->with([
+                'flash' => [
+                    'type' => 'danger',
+                    'message' => 'Something error',
+                ]
+            ]);
         };
     }
 

@@ -10,7 +10,10 @@
             <img class="img-fluid" src="{{ asset('images/dog-post.svg') }}" alt="Example Image">
             <div class="fw-bold text-center d-flex justify-content-center flex-column">
               Dog Post<br />
-              <span class="h1 m-0 fw-bold">12</span>
+              @php
+                $dog_posts = $stray_dogs->where('user_id', $user->id);
+              @endphp
+              <span class="h1 m-0 fw-bold">{{ $dog_posts->count() }}</span>
             </div>
           </div>
         </div>
@@ -21,7 +24,12 @@
             <img class="img-fluid" src="{{ asset('images/dog-request.svg') }}" alt="Example Image">
             <div class="fw-bold text-center d-flex justify-content-center flex-column">
               Dog Request<br />
-              <span class="h1 m-0 fw-bold">12</span>
+              @php
+                $dog_requests = $user->administrator ? 
+                  $stray_dogs->filter(function ($stray_dog) { return $stray_dog->adoptions()->exists() && $stray_dog->adopted === 0; }) : 
+                  $stray_dogs->filter(function ($stray_dog) use ($user) { return $stray_dog->adopted === 0 && $stray_dog->adoptions()->where('user_id', $user->id)->exists(); });
+              @endphp
+              <span class="h1 m-0 fw-bold">{{ $dog_requests->count() }}</span>
             </div>
           </div>
         </div>
@@ -30,31 +38,10 @@
   </div>
 </section>
 
-<section class="mb-5">
-  <div class="container">
-    <h4 class="fw-bold border-bottom border-dark pb-2">Dog you post</h4>
-    <a href="{{ route("stray_dogs.create") }}" style="text-decoration: none">
-      <div class="card dashboard-nodata-card">
-        <div class="card-body text-muted d-flex justify-content-center align-items-center flex-column">
-          <h4 class="m-0">No post yet</h4>
-          <h1><i class="bi bi-plus-square-dotted me-3"></i>Add new stray dog</h1>
-        </div>
-      </div>
-    </a>
-  </div>
-</section>
+@if($user->administrator)
+  @include('dashboard.partials.admin')
+@else
+  @include('dashboard.partials.user')
+@endif
 
-<section class="mb-5">
-  <div class="container">
-    <h4 class="fw-bold border-bottom border-dark pb-2">Dog you request</h4>
-    <a href="{{ route("stray_dogs.index") }}" style="text-decoration: none">
-      <div class="card dashboard-nodata-card">
-        <div class="card-body text-muted d-flex justify-content-center align-items-center flex-column">
-          <h4 class="m-0">No request yet</h4>
-          <h1><i class="bi bi-plus-square-dotted me-3"></i>View all dogs</h1>
-        </div>
-      </div>
-    </a>
-  </div>
-</section>
 @endsection

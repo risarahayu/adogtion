@@ -31,5 +31,11 @@
   </footer>
 
   @yield('scripts')
+
+  @if(session()->has('flash'))
+    <script>
+        toastify("{{ session('flash.type') }}", "{{ session('flash.message') }}");
+    </script>
+  @endif
 </body>
 </html>

@@ -29,7 +29,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'user_1',
             'email' => 'user_1@example.com',
             'password' => bcrypt('123qweasd'),
-            'administrator' => true,
+            'administrator' => false,
+        ]);
+
+        User::create([
+            'name' => 'user_2',
+            'email' => 'user_2@example.com',
+            'password' => bcrypt('123qweasd'),
+            'administrator' => false,
         ]);
 
         // Areas

@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Adoption::class);
     }
+
+    public function rescues()
+    {
+        return $this->hasMany(Rescue::class);
+    }
 }

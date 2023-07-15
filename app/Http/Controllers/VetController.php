@@ -186,7 +186,6 @@ class VetController extends Controller
             return redirect()->route('vets.index')->with('success', 'Vet has been updated successfully.');
         } catch (\Exception $e) {
             // Tangani error
-            dd($e);
             return redirect()->route('vets.edit', $vet->id)->with('error', 'Failed to update Vet. Please try again.');
         }        
     }
@@ -199,8 +198,24 @@ class VetController extends Controller
      */
     public function destroy(Vet $vet)
     {
-        $vet->schedules()->delete();
-        $vet->delete();
-        return redirect()->route('vets.index')->with('success', 'Vet has been created successfully.');
+        try {
+            DB::transaction(function () use ($vet) {
+                $vet->schedules()->delete();
+                $vet->delete(); 
+            });
+            return redirect()->route('vets.index')->with([
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'Vet has been remove',
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->route('vets.index')->with([
+                'flash' => [
+                    'type' => 'danger',
+                    'message' => 'Cannot remove this vet',
+                ]
+            ]);
+        }
     }
 }

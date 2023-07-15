@@ -78,6 +78,7 @@ class AdoptionController extends Controller
         $stray_dog = $adoption->stray_dog;
         $adoption->update(['status' => 'accepted']);
         $stray_dog->adoptions()->where('status', 'pending')->update(['status' => 'declined']);
+        $stray_dog->update(['adopted' => true]);
         return redirect()->route('stray_dogs.show', ['stray_dog' => $stray_dog])->with('success', 'Success');
     }
 

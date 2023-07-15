@@ -133,7 +133,8 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-6">
-          <h4 class="fw-bold pb-2 text-center">We will chat you soon!</h4>
+          <h4 class="text-center pt-5 fw-bold">Do you want to adopt this dog?</h4>
+          <h4 class="pb-2 text-center">We will chat you soon!</h4>
           @if ($user->adoptions()->where('stray_dog_id', $stray_dog->id)->exists())
             <button type="button" class="btn btn-custom-submit w-100">
               {{ __('You already request this dog') }}
@@ -142,10 +143,7 @@
             <div class="card">
               <div class="card-header">{{ __('Contact') }}</div>
               <div class="card-body">
-                @php
-                  $path = $user->userContact()->exists() ? ['PUT', route('user_contacts.update', ['user_contact' => $user->userContact->id])] : ['POST', route('user_contacts.store')];
-                @endphp
-                <form method="{{ $path[0] }}" action="{{ $path[1] }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('user_contacts.store') }}" enctype="multipart/form-data">
                   @csrf
                   <input type="hidden" name="stray_dog_id" value="{{ $stray_dog->id }}">
                   

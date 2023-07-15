@@ -43,11 +43,11 @@ class UserContactController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-        $data = $request->all();
-        $stray_dog = StrayDog::find($data['stray_dog_id']);
+        $data = $request->except(['_token', 'stray_dog_id']);
+        $stray_dog = StrayDog::find($request->stray_dog_id);
         try {
             DB::transaction(function () use ($user, $data, $stray_dog) {
-                $user->userContact()->create($data);
+                !$user->userContact()->exists() ? $user->userContact()->create($data) : $user->userContact()->update($data);
 
                 $adoption = new Adoption();
                 $adoption->user_id = $user->id;
