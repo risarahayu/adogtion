@@ -5,8 +5,7 @@
   <div class="container">
     <div class="d-flex justify-content-between mt-3 mb-5">
       <h1 class="fw-bold">{{ __('Vet List') }}</h1>
-      <a href="{{ route("vets.create") }}" class="btn btn-custom-submit my
-      -auto">{{ __('New Vet') }}</a>
+      <a href="{{ route("vets.create") }}" class="btn btn-custom-submit my-auto">{{ __('New Vet') }}</a>
       {{-- <div class="input-group mb-3" style="max-width: 300px;">
         <input type="search" class="form-control" placeholder="Search">
         <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>

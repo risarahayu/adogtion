@@ -25,7 +25,7 @@ class StoreStrayDogRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
-            'area_id' => 'required',
+            'area' => 'required',
             'dog_type' => 'required|string',
             'color' => 'required|string',
             'temperament' => 'required|string',

@@ -75,11 +75,30 @@ class AdoptionController extends Controller
      */
     public function update(Request $request, Adoption $adoption)
     {
-        $stray_dog = $adoption->stray_dog;
-        $adoption->update(['status' => 'accepted']);
-        $stray_dog->adoptions()->where('status', 'pending')->update(['status' => 'declined']);
-        $stray_dog->update(['adopted' => true]);
-        return redirect()->route('stray_dogs.show', ['stray_dog' => $stray_dog])->with('success', 'Success');
+        if ($request->adoption_status == 'cancel_adoption') {
+            $stray_dog = $adoption->stray_dog;
+            $adoption->update(['status' => 'pending']);
+            $stray_dog->adoptions()->where('status', 'decline')->update(['status' => 'pending']);
+            $stray_dog->update(['adopted' => false]);
+            return redirect()->route('stray_dogs.show', $stray_dog->id)->with([
+                'flash' => [
+                    'type' => 'danger',
+                    'message' => 'You have canceled the adopter',
+                ]
+            ]);
+        } else {
+            $stray_dog = $adoption->stray_dog;
+            $adoption->update(['status' => 'accepted']);
+            $stray_dog->adoptions()->where('status', 'pending')->update(['status' => 'declined']);
+            $stray_dog->update(['adopted' => true]);
+            return redirect()->route('stray_dogs.show', $stray_dog->id)->with([
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'You have selected the adopter',
+                ]
+            ]);
+        }
+        
     }
 
     /**

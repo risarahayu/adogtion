@@ -24,7 +24,7 @@ class UpdateRescueRequest extends FormRequest
     public function rules()
     {
         return [
-            'rescue_id' => 'required',
+            // just no for now
         ];
     }
 }

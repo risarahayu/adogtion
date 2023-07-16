@@ -1,15 +1,29 @@
+@php
+  $adopter = optional($stray_dog->adoptions()->where('status', 'accepted')->first())->user;
+@endphp
+
 <section class="mt-5">
   <div class="container">
-    <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">
-      {{ optional($stray_dog->rescue)->status == 'rescued' ? 'Vets place' : 'Vets near you' }}
-    </h4>
+    @if (!$stray_dog->adopted)
+      <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">
+        {{ optional($stray_dog->rescue)->status == 'rescued' ? 'Vets place' : 'Vets near you' }}
+        @if (optional($stray_dog->rescue)->status == 'rescuing' && $user->id == optional($stray_dog->rescue)->user_id)
+          <small class="fs-6 text-muted">*click rescued button if you already in vet.</small>
+        @elseif (optional($stray_dog->rescue)->status == 'rescuing' && $user->id != optional($stray_dog->rescue)->user_id)
+          <small class="fs-6 text-muted">*stray dog is rescuing</small>
+        @endif
+      </h4>
+    @endif
     <div class="row">
       @foreach($vets as $vet)
         @php
           $rescue_exists = $stray_dog->rescue()->exists();
           $selected_vet = $rescue_exists && optional($stray_dog->rescue)->vet->id == $vet->id;
         @endphp
-        <div class="col-md-4 mb-3">
+        <div class="{{ optional($stray_dog->rescue)->status == 'rescued' ? 'col-md-6' : 'col-md-4' }} mb-3">
+          @if ($stray_dog->adopted)
+            <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Vets place</h4>
+          @endif
           <div class="card dog-list">
             <div class="card-body">
               <div class="row">
@@ -74,34 +88,172 @@
                     </div>
                   </div>
                 </div>
-                @if (optional($stray_dog->rescue)->status != 'rescued')
-                  <div class="col-12 mt-3 rescue-buttons">
-                    <div class="unbtn-rescues {{ $selected_vet ? 'd-none' : 'd-block' }}">
-                      <button type="button" data-dog-id="{{ $stray_dog->id }}" data-vet-id="{{ $vet->id }}" class="btn btn-custom-submit w-100 btn-rescue" @if(optional($stray_dog->rescue)->status == 'rescuing') disabled @endif>
-                        {{ __('Rescue to vet') }}
-                      </button>
+                @if ($stray_dog->rescue()->exists())
+                  @if ($user->id == optional($stray_dog->rescue)->user_id)
+                    <div class="col-12 mt-3 rescue-buttons">
+                      @if (optional($stray_dog->rescue)->status != 'rescued')
+                        @if ($selected_vet)
+                          <div class="row">
+                            <div class="col-6">
+                              <form class="select-vet" action="{{ route('rescues.update', $stray_dog->rescue->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="rescue_status" value="to_rescued">
+                                <button type="button" class="btn btn-custom-submit w-100 btn-rescued">
+                                  {{ __('Rescued') }}
+                                </button>
+                              </form>
+                            </div>
+                            <div class="col-6">
+                              <form class="cancel-vet" action="{{ route('rescues.destroy', $stray_dog->rescue->id) }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <button type="button" class="btn btn-light w-100 btn-rescancel">
+                                  {{ __('Cancel') }}
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                        @else
+                          <form class="select-vet" action="{{ route('rescues.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="stray_dog_id" value="{{ $stray_dog->id }}">
+                            <input type="hidden" name="vet_id" value="{{ $vet->id }}">
+                            <button type="button" class="btn btn-custom-submit w-100 btn-rescue" @if(optional($stray_dog->rescue)->status == 'rescuing') disabled @endif>
+                              {{ __('Rescue to vet') }}
+                            </button>
+                          </form>
+                        @endif
+                      @else
+                        @if ($stray_dog->adoptions->isEmpty())
+                          <form class="select-vet" action="{{ route('rescues.update', $stray_dog->rescue->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" name="rescue_status" value="cancel_rescue">
+                            <button type="button" class="btn btn-light w-100 btn-rescued">
+                              {{ __('Cancel') }}
+                            </button>
+                          </form>
+                        @endif
+                      @endif 
                     </div>
-                    <div class="rescuing-btns {{ $stray_dog->rescue()->exists() && $selected_vet ? 'd-block' : 'd-none' }}">
-                      <div class="row">
-                        <div class="col-6">
-                          <button type="button" data-rescue-id="@if($selected_vet){{ $stray_dog->rescue->id }}@endif" class="btn btn-custom-submit w-100 btn-rescued">
-                            {{ __('Rescued') }}
-                          </button>
+                  @endif
+                @else
+                  <div class="col-12 mt-3 rescue-buttons">
+                    @if (optional($stray_dog->rescue)->status != 'rescued')
+                      @if ($selected_vet)
+                        <div class="row">
+                          <div class="col-6">
+                            <form class="select-vet" action="{{ route('rescues.update', $stray_dog->rescue->id) }}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <input type="hidden" name="rescue_status" value="to_rescued">
+                              <button type="button" class="btn btn-custom-submit w-100 btn-rescued">
+                                {{ __('Rescued') }}
+                              </button>
+                            </form>
+                          </div>
+                          <div class="col-6">
+                            <form class="cancel-vet" action="{{ route('rescues.destroy', $stray_dog->rescue->id) }}" method="POST">
+                              @csrf
+                              @method('delete')
+                              <button type="button" class="btn btn-light w-100 btn-rescancel">
+                                {{ __('Cancel') }}
+                              </button>
+                            </form>
+                          </div>
                         </div>
-                        <div class="col-6">
-                          <button type="button" data-rescue-id="@if($selected_vet){{ $stray_dog->rescue->id }}@endif" class="btn btn-light w-100 btn-rescancel">
+                      @else
+                        <form class="select-vet" action="{{ route('rescues.store') }}" method="POST">
+                          @csrf
+                          <input type="hidden" name="stray_dog_id" value="{{ $stray_dog->id }}">
+                          <input type="hidden" name="vet_id" value="{{ $vet->id }}">
+                          <button type="button" class="btn btn-custom-submit w-100 btn-rescue" @if(optional($stray_dog->rescue)->status == 'rescuing') disabled @endif>
+                            {{ __('Rescue to vet') }}
+                          </button>
+                        </form>
+                      @endif
+                    @else
+                      @if ($stray_dog->adoptions->isEmpty())
+                        <form class="select-vet" action="{{ route('rescues.update', $stray_dog->rescue->id) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <input type="hidden" name="rescue_status" value="cancel_rescue">
+                          <button type="button" class="btn btn-light w-100 btn-rescued">
                             {{ __('Cancel') }}
                           </button>
-                        </div>
-                      </div>
-                    </div>
+                        </form>
+                      @endif
+                    @endif 
                   </div>
-                @endif 
+                @endif
               </div>
             </div>
           </div>
         </div>
       @endforeach
+
+      @if ($stray_dog->adopted && optional($adopter)->id == $user->id)
+        <div class="col-md-6 mb-3">
+          <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Adopter</h4>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-envelope"></i></h4>
+                    <div>
+                      <small>Email</small>
+                      <p class="mb-0">{{ empty($adopter->email) ? "-" : $adopter->email }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-facebook"></i></h4>
+                    <div>
+                      <small>Facebook</small>
+                      <p class="mb-0">{{ empty($adopter->userContact->facebook) ? "-" : $adopter->userContact->facebook }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-whatsapp"></i></h4>
+                    <div>
+                      <small>Whatsapp</small>
+                      <p class="mb-0">{{ empty($adopter->userContact->whatsapp) ? "-" : $adopter->userContact->whatsapp }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-instagram"></i></h4>
+                    <div>
+                      <small>Instagram</small>
+                      <p class="mb-0">{{ empty($adopter->userContact->instagram) ? "-" : $adopter->userContact->instagram }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-telegram"></i></h4>
+                    <div>
+                      <small>Telegram</small>
+                      <p class="mb-0">{{ empty($adopter->userContact->telegram) ? "-" : $adopter->userContact->telegram }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <a class="btn btn-custom-submit w-100" href="{{ route('user_contacts.create') }}">
+                    {{ __('Edit Contact') }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
     </div>
   </div>
 </section>
@@ -132,12 +284,24 @@
   <section>
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-6">
-          <h4 class="text-center pt-5 fw-bold">Do you want to adopt this dog?</h4>
-          <h4 class="pb-2 text-center">We will chat you soon!</h4>
+        <div class="col-6 pt-5">
+          @if (!$stray_dog->adoptions->pluck('user_id')->contains($user->id))
+            <h4 class="text-center fw-bold">Do you want to adopt this dog?</h4>
+          @endif
+          <h4 class="pb-2 text-center">
+            @if ($stray_dog->adopted)
+              {{ optional($adopter)->id == $user->id ? "Congratulations, you have been chosen to adopt this dog! Thank you!" : "Sorry, this dog already adopted" }}
+            @else
+              We will chat you soon!
+            @endif
+          </h4>
           @if ($user->adoptions()->where('stray_dog_id', $stray_dog->id)->exists())
             <button type="button" class="btn btn-custom-submit w-100">
-              {{ __('You already request this dog') }}
+              @if ($stray_dog->adopted)
+                {{ optional($adopter)->id == $user->id ? "You adopted this dog" : "Your request has been denied" }}
+              @else
+                {{ __('You already request this dog') }}
+              @endif
             </button>
           @else
             <div class="card">

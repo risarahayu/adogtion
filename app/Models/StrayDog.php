@@ -11,7 +11,7 @@ class StrayDog extends Model
 
     protected $fillable = [
         'user_id', 'area_id', 'dog_type', 'color', 'temperament',
-        'gender', 'size', 'description', 'map_link',
+        'gender', 'size', 'description', 'map_link', 'adopted',
     ];
 
     public function user()

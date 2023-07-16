@@ -111,26 +111,7 @@
           cancelButtonText: 'No'
         }).then((result) => {
           if (result.isConfirmed) {
-            $.ajax({
-              url: "{{ route('rescues.store') }}",
-              method: "POST",
-              data: {
-                stray_dog_id: self.data('dog-id'),
-                vet_id: self.data('vet-id')
-              },
-              success: function(response) {
-                // Tangani respon sukses
-                console.log(response.rescue_id);
-                $(".btn-rescue").not(self).prop('disabled', true);
-                self.parent().addClass('d-none');
-                self.parents('.rescue-buttons').find('.rescuing-btns').toggleClass('d-none', 'd-block');
-                self.parents('.rescue-buttons').find('.btn-rescued').data('rescue-id', response.rescue_id);
-              },
-              error: function(xhr, status, error) {
-                // Tangani respon gagal
-                console.log(xhr.responseText);
-              }
-            });
+            self.parents('form.select-vet').submit();
           }
         })
       });
@@ -147,25 +128,7 @@
           cancelButtonText: 'No'
         }).then((result) => {
           if (result.isConfirmed) {
-            $.ajax({
-              url: "{{ route('rescues.update', ['rescue' => 'RESCUE_ID']) }}".replace('RESCUE_ID', self.data('rescue-id')),
-              method: "PUT",
-              data: {
-                rescue_id: self.data('rescue-id')
-              },
-              success: function(response) {
-                // Tangani respon sukses
-                console.log(response.rescue_id);
-                self.parents('.rescue-buttons').remove();
-                $(".btn-rescued").not(self).parents('.card.dog-list').parent().remove();
-                $('.vet-title').text('Vet Place');
-                $('#section-squad').remove();
-              },
-              error: function(xhr, status, error) {
-                // Tangani respon gagal
-                console.log(xhr.responseText);
-              }
-            });
+            self.parents('form.select-vet').submit();
           }
         })
       });
@@ -181,27 +144,22 @@
           confirmButtonText: 'Yes',
           cancelButtonText: 'No'
         }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              url: "{{ route('rescues.destroy', ['rescue' => 'RESCUE_ID']) }}".replace('RESCUE_ID', self.data('rescue-id')),
-              method: "DELETE",
-              data: {
-                rescue_id: self.data('rescue-id')
-              },
-              success: function(response) {
-                // Tangani respon sukses
-                console.log(response.rescue_id);
-                $(".btn-rescue").not(self).prop('disabled', true);
-                self.parent().addClass('d-none');
-                self.parents('.rescue-buttons').find('.rescuing-btns').toggleClass('d-none', 'd-block');
-                self.parents('.rescue-buttons').find('.btn-rescued').data('rescue-id', response.rescue_id);
-              },
-              error: function(xhr, status, error) {
-                // Tangani respon gagal
-                console.log(xhr.responseText);
-              }
-            });
-          }
+          self.parents('form.cancel-vet').submit();
+        })
+      });
+
+      // Cancel resque
+      $('.btn-cancel-adoption').click(function() {
+        var self = $(this);
+        Swal.fire({
+          title: 'Are you sure?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#BD1A8D',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((result) => {
+          self.parents('form.cancel-adoption').submit();
         })
       });
     });

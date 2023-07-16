@@ -28,7 +28,7 @@ class StrayDogController extends Controller
      */
     public function index()
     {
-        $stray_dogs = StrayDog::all();
+        $stray_dogs = StrayDog::orderByDesc('created_at')->get();
 
         return view('stray_dogs.index', compact('stray_dogs'));
     }
@@ -56,7 +56,20 @@ class StrayDogController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                $strayDog = StrayDog::create($request->validated());
+                // Create area
+                $area_name = $request->input('area');
+                $area = Area::where('name', $area_name)->first();
+                if (optional($area)->exists()) {
+                    $area = $area;
+                } else {
+                    $area = new Area();
+                    $area->name = $request->input('area');
+                    $area->save();
+                }
+
+                // Create straydogs
+                $stray_dog_request = array_merge($request->except(['_token', 'area']), ['area_id' => $area->id]);
+                $strayDog = StrayDog::create($stray_dog_request);
                 
                 if ($request->hasFile('images')) {
                     foreach ($request->file('images') as $image) {

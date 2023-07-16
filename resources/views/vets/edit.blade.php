@@ -175,7 +175,7 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-custom-submit w-100">
               {{ __('Submit') }}
             </button>
           </form>

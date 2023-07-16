@@ -31,7 +31,13 @@ class UserContactController extends Controller
      */
     public function create()
     {
-        //
+        $user = auth()->user();
+        if ($user->userContact()->exists()) {
+            $user_contact = $user->userContact();
+        } else {
+        }
+        $user_contact = new UserContact;
+        return view('user_contacts.create', compact('user', 'user_contact'));
     }
 
     /**
@@ -45,20 +51,28 @@ class UserContactController extends Controller
         $user = auth()->user();
         $data = $request->except(['_token', 'stray_dog_id']);
         $stray_dog = StrayDog::find($request->stray_dog_id);
-        try {
-            DB::transaction(function () use ($user, $data, $stray_dog) {
-                !$user->userContact()->exists() ? $user->userContact()->create($data) : $user->userContact()->update($data);
+        !$user->userContact()->exists() ? $user->userContact()->create($data) : $user->userContact()->update($data);
 
-                $adoption = new Adoption();
-                $adoption->user_id = $user->id;
-                $adoption->stray_dog_id = $stray_dog->id;
-                $adoption->save();
-            });
-            return redirect()->route('stray_dogs.show', ['stray_dog' => $stray_dog])->with('success', 'Success');
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->route('stray_dogs.show', ['stray_dog' => $stray_dog])->with('error', 'Failed');
-        };
+        if (isset($stray_dog)) {
+            $adoption = new Adoption();
+            $adoption->user_id = $user->id;
+            $adoption->stray_dog_id = $stray_dog->id;
+            $adoption->save();
+
+            return redirect()->route('stray_dogs.show', $stray_dog->id)->with([
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'You have requested to adopt this dog.',
+                ]
+            ]);
+        } else {
+            return redirect()->route('home')->with([
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'You have updated your contact information.',
+                ]
+            ]);
+        }        
     }
 
     /**

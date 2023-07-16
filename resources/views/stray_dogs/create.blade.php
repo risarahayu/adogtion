@@ -69,7 +69,14 @@
                 <div class="row mb-3">
                   <label for="size" class="col-md-4 col-form-label">{{ __('Size') }}</label>
                   <div class="col-md-8">
-                    <input id="size" type="text" class="form-control @error('size') is-invalid @enderror" name="size" required autocomplete="size">
+                    <select class="form-select select2 @error('size') is-invalid @enderror" name="size">
+                      <option value=""></option>
+                      <option value="Small >10kg">Small >10kg</option>
+                      <option value="Medium 11-15kg">Medium 11-15kg</option>
+                      <option value="Large 16-20kg">Large 16-20kg</option>
+                      <option value="Extra Large 20+kg">Extra Large 20+kg</option>
+                    </select>
+
                     @error('size')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -123,12 +130,13 @@
                 <div class="row mb-3">
                   <label for="area_id" class="col-md-4 col-form-label">{{ __('Area') }}</label>
                   <div class="col-md-8">
-                    <select class="form-select select2 @error('area_id') is-invalid @enderror" name="area_id">
+                    <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
                       @foreach($areas as $area)
-                        <option value="{{ $area->id }}">{{ $area->name }}</option>
+                        <option value="{{ $area->name }}">{{ $area->name }}</option>
                       @endforeach
                     </select>
-                    @error('area_id')
+
+                    @error('area')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>

@@ -24,8 +24,7 @@ class StoreRescueRequest extends FormRequest
     public function rules()
     {
         return [
-            'stray_dog_id' => 'required',
-            'vet_id' => 'required',
+            // No just not yet
         ];
     }
 }

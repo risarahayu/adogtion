@@ -17,7 +17,7 @@
               <div class="col-md-8">
                 <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
                   @foreach($areas as $area)
-                    <option value="{{ $area->id }}">{{ $area->name }}</option>
+                    <option value="{{ $area->name }}">{{ $area->name }}</option>
                   @endforeach
                 </select>
 
@@ -159,7 +159,7 @@
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-custom-submit w-100">
               {{ __('Submit') }}
             </button>
           </form>

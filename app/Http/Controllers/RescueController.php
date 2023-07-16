@@ -40,20 +40,20 @@ class RescueController extends Controller
      */
     public function store(StoreRescueRequest $request)
     {
-        // Validasi data yang diterima dari request
-        $validatedData = $request->validated();
-
         $userId = auth()->user()->id;
-
         $rescue = new Rescue();
-        $rescue->stray_dog_id = $validatedData['stray_dog_id'];
-        $rescue->vet_id = $validatedData['vet_id'];
+        $rescue->stray_dog_id = $request->stray_dog_id;
+        $rescue->vet_id = $request->vet_id;
         $rescue->user_id = $userId;
         $rescue->status = 'rescuing';
         $rescue->save();
 
-        // Jika berhasil disimpan, kembalikan respon JSON yang sesuai
-        return response()->json(['rescue_id' => $rescue->id, 'message' => 'Rescue data saved successfully'], 200);
+        return redirect()->route('stray_dogs.show', $request->stray_dog_id)->with([
+            'flash' => [
+                'type' => 'success',
+                'message' => 'You have select vet for this stray dog.',
+            ]
+        ]);
     }
 
     /**
@@ -87,11 +87,28 @@ class RescueController extends Controller
      */
     public function update(UpdateRescueRequest $request, Rescue $rescue)
     {
-        $rescue->status = 'rescued';
-        $rescue->save();
-
-        // Jika berhasil diupdate, kembalikan respon JSON yang sesuai
-        return response()->json(['message' => 'Rescue data updated successfully', 'rescue_id' => $rescue->id], 200);
+        if ($request->rescue_status == 'to_rescued') {
+            $rescue->status = 'rescued';
+            $rescue->save();
+    
+            return redirect()->route('stray_dogs.show', $rescue->stray_dog->id )->with([
+                'flash' => [
+                    'type' => 'success',
+                    'message' => 'You have rescued this dog',
+                ]
+            ]);
+        } else {
+            $rescue->status = 'rescuing';
+            $rescue->save();
+    
+            return redirect()->route('stray_dogs.show', $rescue->stray_dog->id )->with([
+                'flash' => [
+                    'type' => 'danger',
+                    'message' => 'You have canceled the rescue.',
+                ]
+            ]);
+        }
+        
     }
 
     /**
@@ -102,15 +119,16 @@ class RescueController extends Controller
      */
     public function destroy(Rescue $rescue)
     {
-        if ($rescue) {
-            // Lakukan proses penghapusan Rescue
-            $rescue->delete();
-            
-            // Respon berhasil
-            return response()->json(['message' => 'Rescue deleted successfully'], 200);
-        }
+        $stray_dog_id = $rescue->stray_dog->id;
+        // Lakukan proses penghapusan Rescue
+        $rescue->delete();
         
-        // Respon jika Rescue tidak ditemukan
-        return response()->json(['message' => 'Rescue not found'], 404);
+        // Respon berhasil
+        return redirect()->route('stray_dogs.show', $stray_dog_id )->with([
+            'flash' => [
+                'type' => 'danger',
+                'message' => 'You have cancel selected vet',
+            ]
+        ]);
     }
 }
