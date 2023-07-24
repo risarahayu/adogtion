@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // Landing page
-Route::get('/', function () { return view('home.index'); });
+Route::get('/', function () { return redirect()->route('login'); });
 
 
 Route::namespace('App\Http\Controllers')->group(function () {

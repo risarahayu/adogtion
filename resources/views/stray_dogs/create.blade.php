@@ -143,6 +143,7 @@
                     @enderror
                   </div>
                 </div>
+                <div id="map-container"></div>
                 <button type="submit" class="btn btn-custom-submit w-100">
                   {{ __('Submit') }}
                 </button>
@@ -160,6 +161,7 @@
     </div>
   </div>
 </div>
+
 @endsection
 
 @section('scripts')
@@ -193,6 +195,27 @@
           console.log('Ada field yang belum diisi.');
         }
       });
+
+      // MAPS
+      // Cek apakah browser mendukung Geolocation API
+      if ("geolocation" in navigator) {
+        // Menggunakan Geolocation API untuk mendapatkan koordinat pengguna
+        navigator.geolocation.getCurrentPosition(function(position) {
+          // Dapatkan koordinat latitude dan longitude pengguna
+          var latitude = position.coords.latitude;
+          var longitude = position.coords.longitude;
+
+          // Buat URL iframe Google Maps dengan koordinat pengguna sebagai pusat peta
+          var mapUrl = "https://maps.google.com/maps?q=" + latitude + "," + longitude + "&output=embed&z=14";
+
+          // Sisipkan iframe Google Maps ke dalam div dengan id "map-container"
+          $("#map-container").html('<iframe width="100%" height="400" frameborder="0" style="border:0" src="' + mapUrl + '"></iframe>');
+          $("#map_link").val(mapUrl);
+        });
+      } else {
+        // Jika Geolocation API tidak didukung oleh browser, Anda dapat menambahkan tindakan alternatif di sini
+        console.log("Geolocation tidak didukung oleh browser.");
+      }
     });
   </script>
 @endsection
