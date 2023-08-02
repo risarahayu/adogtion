@@ -29,26 +29,26 @@
           @endif
         @else
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
+            <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">{{ __('Dashboard') }}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('stray_dogs.index') }}">{{ __('Dog List') }}</a>
+            <a class="nav-link {{ request()->routeIs('stray_dogs.index') ? 'active' : '' }}" href="{{ route('stray_dogs.index') }}">{{ __('Dog List') }}</a>
           </li>
-          @if (auth()->user()->administrator)
+          @if (auth()->user())
             <li class="nav-item">
-              <a class="nav-link" href="{{ route('vets.index') }}">
+              <a class="nav-link {{ request()->routeIs('vets.index') ? 'active' : '' }}" href="{{ route('vets.index') }}">
                 {{ __('Vet List') }}
               </a>
             </li>
           @endif
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('stray_dogs.create') }}">
-              {{ __('Add New') }}
+            <a class="nav-link {{ request()->routeIs('stray_dogs.create') ? 'active' : '' }}" href="{{ route('stray_dogs.create') }}">
+              {{ __('Add New Dog') }}
               <img src="{{ asset('images/paw.svg') }}" alt="SVG Image">
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+            <a id="navbarDropdown" class="nav-link {{ request()->routeIs('user_contacts.create') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
               {{ Auth::user()->name }}
               <i class="bi bi-person-circle"></i>
             </a>

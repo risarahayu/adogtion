@@ -48,7 +48,7 @@ class RescueController extends Controller
         $rescue->status = 'rescuing';
         $rescue->save();
 
-        return redirect()->route('stray_dogs.show', $request->stray_dog_id)->with([
+        return redirect()->route('stray_dogs.show', $rescue->stray_dog->id . '#section-squad')->with([
             'flash' => [
                 'type' => 'success',
                 'message' => 'You have select vet for this stray dog.',

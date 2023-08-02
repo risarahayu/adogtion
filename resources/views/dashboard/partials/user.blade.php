@@ -43,20 +43,25 @@
                   <div class="row adoption-status">
                     <div class="col-5 d-flex align-items-center">
                       @php
-                        if($stray_dog->rescue()->exists()) {
-                          $dog_status = ucfirst($stray_dog->rescue->status);
-                          $status_style = "";
+                      if($stray_dog->rescue()->exists()) {
+                        $status_style = "";
+                        if($stray_dog->adoptions()->where('status', 'accepted')->exists()) {
+                          $dog_status = "Adopted";
+                          $status_style = "background-color: green;";
                         } else {
-                          $dog_status = 'Unrescued';
-                          $status_style = "background-color: orangered;";
-                        };
+                          $dog_status = ucfirst($stray_dog->rescue->status);
+                        }
+                      } elseif(!$stray_dog->rescue()->exists()) {
+                        $dog_status = 'Unrescued';
+                        $status_style = "background-color: orangered;";
+                      }
                       @endphp
                       <button type="button" class="btn btn-custom-submit w-100" style="{{ $status_style }}">
                         {{ $dog_status }}
                       </button>
                     </div>
                     <div class="col-7">
-                      <small class="fw-bold">Request by 3 peoples</small><br/>
+                      <small class="fw-bold">Request by {{$stray_dog->adoptions_count}} people</small><br/>
                       <small>Since {{ $stray_dog->created_at->format('Y-m-d') }}</small>
                     </div>
                   </div>
@@ -114,21 +119,26 @@
                   </div>
                   <div class="row adoption-status">
                     <div class="col-5 d-flex align-items-center">
-                      @php
-                        if($stray_dog->rescue()->exists()) {
-                          $dog_status = ucfirst($stray_dog->rescue->status);
-                          $status_style = "";
+                    @php
+                      if($stray_dog->rescue()->exists()) {
+                        $status_style = "";
+                        if($stray_dog->adoptions()->where('status', 'accepted')->exists()) {
+                          $dog_status = "Adopted";
+                          $status_style = "background-color: green;";
                         } else {
-                          $dog_status = 'Unrescued';
-                          $status_style = "background-color: orangered;";
-                        };
+                          $dog_status = ucfirst($stray_dog->rescue->status);
+                        }
+                      } elseif(!$stray_dog->rescue()->exists()) {
+                        $dog_status = 'Unrescued';
+                        $status_style = "background-color: orangered;";
+                      }
                       @endphp
                       <button type="button" class="btn btn-custom-submit w-100" style="{{ $status_style }}">
                         {{ $dog_status }}
                       </button>
                     </div>
                     <div class="col-7">
-                      <small class="fw-bold">Request by 3 peoples</small><br/>
+                      <small class="fw-bold">Request by {{$stray_dog->adoptions_count}} people</small><br/>
                       <small>Since {{ $stray_dog->created_at->format('Y-m-d') }}</small>
                     </div>
                   </div>

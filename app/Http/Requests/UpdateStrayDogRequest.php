@@ -13,7 +13,7 @@ class UpdateStrayDogRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class UpdateStrayDogRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => 'required',
+            'area' => 'required',
+            'dog_type' => 'required|string',
+            'color' => 'required|string',
+            'temperament' => 'required|string',
+            'gender' => 'required|string',
+            'size' => 'required|string',
+            'description' => 'required|string',
+            'map_link' => 'nullable|string',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

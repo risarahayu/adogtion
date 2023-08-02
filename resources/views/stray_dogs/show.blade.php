@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+
+
   <section>
     <div class="container">
       <div class="row">
@@ -82,7 +84,10 @@
             </button>
           </div>
         </div>
-        <div class="col-md-6 p-5">
+        <div class="col-md-6 p-5 text-center">
+          @if(Auth::id()==$stray_dog->user_id)
+          <a type="button" class="mb-5 btn btn-custom-submit btn-rescue mx-auto" style="width:fit-content;" href="{{ route('stray_dogs.edit', $stray_dog->id) }}"><i class="bi bi-pencil-square pe-3"></i>Edit Stray Dog</a>
+          @endif
           <img class="img-fluid" src="{{ asset('images/lets-chat-withus.svg') }}">
         </div>
       </div>
@@ -128,7 +133,12 @@
           cancelButtonText: 'No'
         }).then((result) => {
           if (result.isConfirmed) {
+            // Arahkan pengguna ke section dengan ID target
+            var targetSectionId = 'section-squad'; // Ganti dengan ID dari section yang diinginkan
+                              $('#' + targetSectionId).get(0).scrollIntoView({ behavior: 'smooth' });
             self.parents('form.select-vet').submit();
+
+             
           }
         })
       });

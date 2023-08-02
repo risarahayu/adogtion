@@ -4,14 +4,41 @@
 <section>
   <div class="container">
     <div class="d-flex justify-content-between mt-3 mb-5">
-      <h1 class="fw-bold">{{ __('Stray Dog List') }}</h1>
-      <div class="input-group mb-3" style="max-width: 300px;">
-        <input type="search" class="form-control" placeholder="Search">
-        <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+      <div>
+        <h1 class="fw-bold">{{ __('Stray Dog List') }}</h1>
+        <p>We found <span class="fw-semibold">{{$stray_dogs->count()}} 
+          at
+          @if(!empty($area_name))
+            {{$area_name}}
+          @else
+            <span>All</span>
+          
+          @endif
+        </span> stray dog</p>
       </div>
+       <!-- search -->
+       <form action="/search/stray_dog" method="GET" class="input-group mb-3" style="max-width: 300px; height: fit-content;">
+        @csrf <!-- Add CSRF token -->
+        <input type="search" name="search" class="form-control" placeholder="Search">
+        <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+      </form>
+      <!-- sort -->
+      <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-filter me-2"></i>Filter
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ route('stray_dogs.index') }}">All</a></li>
+              @foreach($area as $areaItem)
+                <li><a class="dropdown-item" href="{{ route('straydogs.sort', ['area_name' => $areaItem->name]) }}">{{ $areaItem->name }}</a></li>
+              @endforeach 
+            </ul>
+      </div>
+      
     </div>
   </div>
 </section>
+
 
 <section>
   <div class="container">
@@ -49,19 +76,25 @@
                     <div class="col-5 d-flex align-items-center">
                       @php
                         if($stray_dog->rescue()->exists()) {
-                          $dog_status = ucfirst($stray_dog->rescue->status);
                           $status_style = "";
-                        } else {
-                          $dog_status = 'Unrescued';
+                          if($stray_dog->adoptions()->where('status', 'accepted')->exists()) {
+                            $dog_status = "Adopted";
+                            $status_style = "background-color: green;";
+                          } else {
+                            $dog_status = 'Adoptable';
+                            
+                          }
+                        } elseif(!$stray_dog->rescue()->exists()) {
+                          $dog_status = 'Need Rescue';
                           $status_style = "background-color: orangered;";
-                        };
-                      @endphp
+                        }
+                        @endphp
                       <button type="button" class="btn btn-custom-submit w-100" style="{{ $status_style }}">
                         {{ $dog_status }}
                       </button>
                     </div>
                     <div class="col-7">
-                      <small class="fw-bold">Request by 3 peoples</small><br/>
+                      <small class="fw-bold">Request by {{$stray_dog->adoptions_count}} people</small><br/>
                       <small>Since {{ $stray_dog->created_at->format('Y-m-d') }}</small>
                     </div>
                   </div>

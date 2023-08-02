@@ -1244,6 +1244,17 @@ section#auth-section .auth-form {
     padding: 0 50px !important;
   }
 }
+footer {
+  background-color: #BD1A8D;
+  padding: 32px 32px;
+  color: white;
+  text-align: center;
+}
+footer a {
+  color: white;
+  text-decoration: underline;
+}
+
 /*!
  * Bootstrap  v5.3.0 (https://getbootstrap.com/)
  * Copyright 2011-2023 The Bootstrap Authors
@@ -22190,6 +22201,29 @@ a.with-link:hover {
   color: #0d6efd;
 }
 
+main {
+  min-height: 100vh;
+}
+
+.bar {
+  color: white;
+  margin: auto;
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 4px;
+  padding: 8px;
+}
+.bar.green {
+  background-color: green;
+}
+.bar.red {
+  background-color: red;
+}
+.bar.purple {
+  background-color: #BD1A8D;
+}
+
 .adogtion-navbar {
   background-color: #BD1A8D;
   color: white;
@@ -22224,6 +22258,12 @@ a.with-link:hover {
   height: 2px;
   background-color: white;
   transition: width 0.3s ease-in-out;
+}
+.nav-item .nav-link.active {
+  border-bottom: 2px solid white;
+}
+.nav-item .nav-link.active:hover::before {
+  width: 0%;
 }
 .nav-item .nav-link:hover::before {
   width: 100%;

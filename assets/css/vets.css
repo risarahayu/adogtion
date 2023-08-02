@@ -1,0 +1,6 @@
+#schedule_table {
+  display: none;
+}
+#schedule_table.active {
+  display: block;
+}

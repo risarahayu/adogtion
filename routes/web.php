@@ -36,7 +36,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // Adoptions
     Route::resource('adoptions', 'AdoptionController');
+
+    // search
+    Route::get('/search','HomeController@search');
+    Route::get('/search/stray_dog','StrayDogController@search');
+
+    //filter
+    Route::get('stray_dog/sort/{area_name}', 'StraydogController@sort')->name('straydogs.sort');
+    Route::get('/sort/{status}', 'HomeController@sort')->name('home.sort');
+
 });
+
+
 
 // User auth
 Auth::routes();

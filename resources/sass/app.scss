@@ -1,9 +1,13 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
+// Adogtion variables
+$base-color: #BD1A8D;
+
 // Variables
 @import 'variables';
 @import 'auth';
+@import 'footer';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -18,8 +22,6 @@
 // Controllers
 @import 'vets';
 
-// Adogtion variables
-$base-color: #BD1A8D;
 
 .color-mp { color: $base-color; }
 
@@ -38,6 +40,64 @@ a {
     }
   }
 }
+
+main { min-height: 100vh; }
+
+.bar{
+  color: white;
+  margin:auto;
+  display: block;
+  width: fit-content;
+  border-radius: 4px;;
+  padding: 8px;
+  &.green{
+    background-color:green;
+  }
+  &.red{
+  background-color:red ;
+  }
+  &.purple{
+    background-color: #BD1A8D;
+  }
+}
+
+
+//img preview
+// .preview-item {
+//   display: inline-block;
+//   text-align: center;
+//   margin-right: 10px;
+//   padding: 4px 4px;
+//   position: relative;
+
+//   .imageThumb {
+//     max-height: 100px;
+//     width: auto;
+//   }
+
+//   .remove-icon {
+//     cursor: pointer;
+//     position: relative;
+
+//     &:hover::after {
+//       content: "Remove"; /* Add the tooltip text directly */
+//       position: absolute;
+//       top: 100%; /* Show the tooltip below the .remove-icon */
+//       left: 50%;
+//       transform: translateX(-50%);
+//       display: block;
+//       background-color: rgba(0, 0, 0, 0.8);
+//       color: #fff;
+//       padding: 4px 8px;
+//       font-size: 12px;
+//       border-radius: 4px;
+//       white-space: nowrap;
+//     }
+//   }
+// }
+
+
+
 
 .adogtion-navbar {
   background-color: $base-color;
@@ -66,6 +126,12 @@ a {
       height: 2px;
       background-color: white;
       transition: width 0.3s ease-in-out;
+    }
+    &.active {
+      border-bottom: 2px solid white;
+      &:hover::before {
+        width: 0%;
+      }
     }
     &:hover::before {
       width: 100%;

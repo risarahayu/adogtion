@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->hasOne(UserContact::class);
     }
 
+    public function strayDogs()
+    {
+        return $this->hasMany(StrayDog::class);
+    }
+
     public function vets()
     {
         return $this->hasMany(Vet::class);

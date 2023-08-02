@@ -27,7 +27,7 @@
   </main>
 
   <footer>
-    <!-- Include your footer content here -->
+    @include('layouts.footer')
   </footer>
 
   @yield('scripts')

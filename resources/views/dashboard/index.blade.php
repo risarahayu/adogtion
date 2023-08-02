@@ -1,6 +1,46 @@
 @extends('layouts.app')
 
 @section('content')
+
+<section>
+  <div class="container">
+    <div class="d-flex justify-content-between mt-3 mb-5">
+    <div>
+      <h1 class="fw-bold">{{ __('Stray Dog List') }}</h1>
+        <p>We found <span class="fw-semibold">{{$stray_dogs->count()}} 
+            at
+            @if(!empty($area_name))
+              {{$area_name}}
+            @else
+              <span>All</span>
+            
+            @endif
+          </span> stray dog</p>
+      </div>
+      <form action="/search" method="GET" class="input-group mb-3" style="max-width: 300px; height:fit-content;" >
+        @csrf <!-- Add CSRF token -->
+        <input type="search" name="search" class="form-control" placeholder="Search" >
+        <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+      </form>
+      <div>
+      <!-- sort -->
+      <div class="dropdown"> 
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-filter me-2"></i>Filter
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ route('home') }}">All</a></li>
+              <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'unrescued']) }}">Unrescue</a></li>
+              <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'rescued']) }}">Rescue</a></li>
+              <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'adopted']) }}">Adopted</a></li>
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section class="mb-5">
   <div class="container">
     <div class="row justify-content-around">
