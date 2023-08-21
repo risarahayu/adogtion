@@ -88,4 +88,5 @@ class HomeController extends Controller
         // Pass the filtered straydogs and the area to the view
         return view('dashboard.index', compact('stray_dogs', 'adoptions','user'));
     }
+
 }

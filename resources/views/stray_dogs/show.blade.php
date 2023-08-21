@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-
   <section>
     <div class="container">
       <div class="row">
@@ -48,12 +46,23 @@
               </div>
             </div>
 
-            <div class="col-12">
+            <div class="col-6">
               <div class="d-flex align-items-center" style="gap: 15px;">
                 <i class="bi bi-file-earmark-text dtl-icon"></i>
                 <div>
                   <small>Description</small><br/>
                   <h4 class="fw-bold">{{ ucfirst($stray_dog->description) }}</h4>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-6">
+              <div class="d-flex align-items-center" style="gap: 15px;">
+                <i class="bi bi-whatsapp dtl-icon"></i>
+                <div>
+                  
+                  <a href="{{route('user_contacts.show', $own->id) }}"><small>By {{ $own->name }}</small></a><br/>
+                  <h4 class="fw-bold">{{ optional($own->userContact)->whatsapp }}</h4>
                 </div>
               </div>
             </div>
@@ -84,11 +93,22 @@
             </button>
           </div>
         </div>
-        <div class="col-md-6 p-5 text-center">
+        <div class="col-md-6 text-center">
           @if(Auth::id()==$stray_dog->user_id)
-          <a type="button" class="mb-5 btn btn-custom-submit btn-rescue mx-auto" style="width:fit-content;" href="{{ route('stray_dogs.edit', $stray_dog->id) }}"><i class="bi bi-pencil-square pe-3"></i>Edit Stray Dog</a>
+            <div class="d-flex justify-content-end" style="gap: 5px;">
+              <a type="button" class="btn btn-custom-submit" href="{{ route('stray_dogs.edit', $stray_dog->id) }}"><i class="bi bi-pencil-square me-2"></i>edit</a>
+              @if (!$stray_dog->rescue()->exists())
+                <button class="btn btn-danger delete-dog">
+                  <i class="bi bi-trash me-2"></i>delete
+                </button>
+                <form action="{{ route('stray_dogs.destroy', $stray_dog->id) }}" method="POST">
+                  @csrf
+                  @method('DELETE')
+                </form>
+              @endif
+            </div>
           @endif
-          <img class="img-fluid" src="{{ asset('images/lets-chat-withus.svg') }}">
+          <img class="img-fluid p-5" src="{{ asset('images/lets-chat-withus.svg') }}">
         </div>
       </div>
     </div>
@@ -137,8 +157,6 @@
             var targetSectionId = 'section-squad'; // Ganti dengan ID dari section yang diinginkan
                               $('#' + targetSectionId).get(0).scrollIntoView({ behavior: 'smooth' });
             self.parents('form.select-vet').submit();
-
-             
           }
         })
       });
@@ -170,6 +188,22 @@
           cancelButtonText: 'No'
         }).then((result) => {
           self.parents('form.cancel-adoption').submit();
+        })
+      });
+
+      $('.delete-dog').click(function() {
+        var self = $(this);
+        Swal.fire({
+          title: 'Are you sure?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#BD1A8D',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            self.parent().find('form').submit();
+          }
         })
       });
     });

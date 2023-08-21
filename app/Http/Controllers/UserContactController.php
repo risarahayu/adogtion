@@ -83,7 +83,11 @@ class UserContactController extends Controller
      */
     public function show(UserContact $userContact)
     {
-        //
+        $contact = UserContact::findOrFail($userContact->user_id);
+        // dd($contact);
+        $name=$contact->user->name;
+        
+        return view('user_contacts.show', compact('contact','name'));
     }
 
     /**

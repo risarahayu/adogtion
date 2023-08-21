@@ -107,60 +107,62 @@
 
     <!-- card -->
     <div class="row my-5">
-      <div class="col-md-6 mb-3 mb-sm-0">
-        <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Rescuer</h4>
-        <div class="card">
-          <!-- improve -->
+      @if ($stray_dog->rescue()->exists())
+        <div class="col-md-6 mb-3 mb-sm-0">
+          <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Rescuer</h4>
+          <div class="card">
+            <!-- improve -->
             <h5 class="card-title bold card-header"><i class="bi bi-person-circle me-3"></i>{{$own->name}}</h5>
-              <div class="card-body">
-                <div class="row">
+            <div class="card-body">
+              <div class="row">
+                <div class="d-flex align-items-center" style="gap: 10px">
+                  <h4><i class="bi bi-envelope"></i></h4>
+                    <div>
+                      <small>Email</small>
+                      <p class="mb-0 fw-bold">{{ empty($own->email) ? "-" : $own->email }}</p>
+                    </div>
+                </div>
+                <div class="col-6">
                   <div class="d-flex align-items-center" style="gap: 10px">
-                    <h4><i class="bi bi-envelope"></i></h4>
-                      <div>
-                        <small>Email</small>
-                        <p class="mb-0 fw-bold">{{ empty($own->email) ? "-" : $own->email }}</p>
-                      </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="d-flex align-items-center" style="gap: 10px">
-                      <h4><i class="bi bi-facebook"></i></h4>
-                      <div>
-                        <small>Facebook</small>
-                        <p class="mb-0 fw-bold">{{ empty($own->userContact->facebook) ? "-" : $own->userContact->facebook }}</p>
-                      </div>
+                    <h4><i class="bi bi-facebook"></i></h4>
+                    <div>
+                      <small>Facebook</small>
+                      <p class="mb-0 fw-bold">{{ empty($own->userContact->facebook) ? "-" : $own->userContact->facebook }}</p>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="d-flex align-items-center" style="gap: 10px">
-                      <h4><i class="bi bi-whatsapp"></i></h4>
-                      <div>
-                        <small>Whatsapp</small>
-                        <p class="mb-0 fw-bold">{{ empty($own->userContact->whatsapp) ? "-" : $own->userContact->whatsapp }}</p>
-                      </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-whatsapp"></i></h4>
+                    <div>
+                      <small>Whatsapp</small>
+                      <p class="mb-0 fw-bold">{{ empty($own->userContact->whatsapp) ? "-" : $own->userContact->whatsapp }}</p>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="d-flex align-items-center" style="gap: 10px">
-                      <h4><i class="bi bi-instagram"></i></h4>
-                      <div>
-                        <small>Instagram</small>
-                        <p class="mb-0 fw-bold">{{ empty($own->userContact->instagram) ? "-" : $own->userContact->instagram }}</p>
-                      </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-instagram"></i></h4>
+                    <div>
+                      <small>Instagram</small>
+                      <p class="mb-0 fw-bold">{{ empty($own->userContact->instagram) ? "-" : $own->userContact->instagram }}</p>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="d-flex align-items-center" style="gap: 10px">
-                      <h4><i class="bi bi-telegram"></i></h4>
-                      <div>
-                        <small>Telegram</small>
-                        <p class="mb-0 fw-bold">{{ empty($own->userContact->telegram) ? "-" : $own->userContact->telegram }}</p>
-                      </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex align-items-center" style="gap: 10px">
+                    <h4><i class="bi bi-telegram"></i></h4>
+                    <div>
+                      <small>Telegram</small>
+                      <p class="mb-0 fw-bold">{{ empty($own->userContact->telegram) ? "-" : $own->userContact->telegram }}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </div>
+      @endif
       <div class="col">
         <!-- Adopter -->
         @if ($stray_dog->adopted)
@@ -258,6 +260,7 @@
               <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Vets place</h4>
             @endif
             <div class="card dog-list">
+              <h5 class="card-title bold card-header"><i class="bi bi-geo me-3"></i>{{$vet->name}}</h5>
               <div class="card-body">
                 <div class="row">
                   <div class="col-12">
@@ -497,11 +500,8 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6 p-5 text-center">
-          <p>Mission Paws’ible Pet Taxi can assist in moving the animal to the closest vet <br>
-          <span class="fw-semibold">Ignore this if you want rescue by yourself </span>
-          </p>
-            <br>
-            <p>Let's order and tell them where you want to rescue the dog</p>
+          <p>Mission Paws’ible Pet Taxi can assist in moving the animal to the closest vet </p>
+            <!-- <p>Let's order and tell them where you want to rescue the dog</p> -->
           <a href="https://balibuddies.com/pet-friendly-transport-in-bali-with-grab-pet/" type="button" class="btn btn-custom-submit w-100">
             {{ __('Grab Pets') }}
           </a>
@@ -513,6 +513,7 @@
               <li><a class="dropdown-item" href="https://wa.me/+6289526902626">Whatsapp Surya </a></li>
               <li><a class="dropdown-item" href="https://wa.me/+6281337422297">Whatsapp Nana</a></li>
             </ul>
+            <span class="fw-semibold pt-5">Ignore this if you want rescue by yourself </span><br>
             <small class="fs-6 pt-5" style="color:#b41986;">*click <a href="#vets place" style="text-decoration: underline; color:#BD1A8D">rescued button</a> if the dog is already in vet.</small>
           </div>
         </div>

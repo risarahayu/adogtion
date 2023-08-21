@@ -213,7 +213,13 @@ class StrayDogController extends Controller
      */
     public function destroy(StrayDog $strayDog)
     {
-        //
+        $strayDog->delete();
+        return redirect()->route('stray_dogs.index')->with([
+            'flash' => [
+                'type' => 'success',
+                'message' => 'Stray dog has been remove',
+            ]
+        ]);
     }
 
     public function search(Request $request)

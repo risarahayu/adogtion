@@ -30,7 +30,6 @@ class VetController extends Controller
      */
     public function index()
     {
-        //
         $vets = Vet::all();
         $areas = Area::all();
         return view('vets.index', compact('vets', 'areas'));

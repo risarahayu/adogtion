@@ -141,6 +141,7 @@
         <div class="col-md-8">
           <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Vets place</h4>
           <div class="card dog-list">
+            <h5 class="card-title bold card-header"><i class="bi bi-geo me-3"></i>{{$vet_rescue->vet->name}}</h5>
             <div class="card-body">
               <div class="row">
                 <div class="col-8">
