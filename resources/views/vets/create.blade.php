@@ -9,7 +9,7 @@
 
         <div class="card-body">
           <div class="google-map mb-3">
-            <input id="addressInput" type="text" placeholder="Enter an address" class="form-control">
+            <input id="addressInput" type="text" placeholder="Enter your current address" class="form-control">
             <div id="map" style="width: 100%; height: 500px;"></div>
           </div>
 

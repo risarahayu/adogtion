@@ -192,3 +192,7 @@ main { min-height: 100vh; }
   font-size: 1.8rem;
   height: 1.8rem;
 }
+
+.select2-container--bootstrap-5 .select2-selection {
+  background-color: unset !important;
+}

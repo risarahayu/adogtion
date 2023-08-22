@@ -2,16 +2,17 @@
 
 @section('content')
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
+  <div class="row justify-content-center flex-column-reverse flex-lg-row">
+    <div class="col-lg-6">
       <div class="d-flex align-items-center h-100">
         <div class="card w-100">
           <div class="card-header">{{ __('Stray Dog') }}</div>
   
           <div class="card-body">
             <div class="google-map mb-3">
-              <input id="addressInput" type="text" placeholder="Enter an address" class="form-control">
-              <div id="map" style="width: 100%; height: 500px;"></div>
+              <!-- <label>Current Location</label> -->
+              <input id="addressInput" type="text" placeholder="Enter your current location" class="form-control">
+              <div id="map" style="width: 100%; height: 300px;"></div>
             </div>
 
             <form method="POST" action="{{ route('stray_dogs.store') }}" enctype="multipart/form-data">
@@ -22,7 +23,7 @@
   
               <fieldset id="fieldset-dog" class="d-block">
                 <div class="row mb-3">
-                  <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
+                  <label for="area" class="col-md-4 col-form-label">{{ __('Current Area') }}</label>
     
                   <div class="col-md-8">
                     <input class="form-control selected-kecamatan" type="text" disabled>
@@ -37,7 +38,7 @@
                 <div class="row mb-3">
                   <label for="dog_type" class="col-md-4 col-form-label">{{ __('Dog Type') }}</label>
                   <div class="col-md-8">
-                    <input id="dog_type" type="text" class="form-control @error('dog_type') is-invalid @enderror" name="dog_type" required autocomplete="dog_type">
+                    <input id="dog_type" type="text" class="form-control @error('dog_type') is-invalid @enderror" name="dog_type" placeholder="Enter dog's type" required autocomplete="dog_type">
                     @error('dog_type')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -49,7 +50,7 @@
                 <div class="row mb-3">
                   <label for="color" class="col-md-4 col-form-label">{{ __('Color') }}</label>
                   <div class="col-md-8">
-                    <input id="color" type="text" class="form-control @error('color') is-invalid @enderror" name="color" required autocomplete="color">
+                    <input id="color" type="text" class="form-control @error('color') is-invalid @enderror" placeholder="Enter dog's color"  name="color" required autocomplete="color">
                     @error('color')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -61,7 +62,7 @@
                 <div class="row mb-3">
                   <label for="temperament" class="col-md-4 col-form-label">{{ __('Temperament') }}</label>
                   <div class="col-md-8">
-                    <input id="temperament" type="text" class="form-control @error('temperament') is-invalid @enderror" name="temperament" required autocomplete="temperament">
+                    <input id="temperament" type="text" class="form-control @error('temperament') is-invalid @enderror" name="temperament" placeholder="Enter dog's temprament"  required autocomplete="temperament">
                     @error('temperament')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -74,7 +75,7 @@
                   <label for="gender" class="col-md-4 col-form-label">{{ __('Gender') }}</label>
                   <div class="col-md-8">
                     <select class="form-select select2 @error('area_id') is-invalid @enderror" name="gender">
-                      <option></option>
+                      <option>Choose dog's gender</option>
                       <option value="male">{{ __('Male') }}</option>
                       <option value="female">{{ __('Female') }}</option>
                     </select>
@@ -90,7 +91,7 @@
                   <label for="size" class="col-md-4 col-form-label">{{ __('Size') }}</label>
                   <div class="col-md-8">
                     <select class="form-select select2 @error('size') is-invalid @enderror" name="size">
-                      <option value=""></option>
+                      <option value="">Choose dog's size</option>
                       <option value="Small >10kg">Small >10kg</option>
                       <option value="Medium 11-15kg">Medium 11-15kg</option>
                       <option value="Large 16-20kg">Large 16-20kg</option>
@@ -108,7 +109,7 @@
                 <div class="row mb-3">
                   <label for="description" class="col-md-4 col-form-label">{{ __('Description') }}</label>
                   <div class="col-md-8">
-                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" required autocomplete="description"></textarea>
+                    <textarea class="form-control @error('description') is-invalid @enderror" placeholder="Tell us about the dog condition ..."  id="description" name="description" required autocomplete="description"></textarea>
                     @error('description')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -179,7 +180,7 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-lg-6">
       <div class="h-100 d-flex align-items-center p-5">
         <img class="img-fluid" src="{{ asset('images/new-dog.svg') }}" alt="Example Image">
       </div>
