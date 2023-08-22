@@ -46,3 +46,137 @@ $(function() {
     tags: true,
   });
 })
+
+// GOOGLE MAP API
+var map;
+var geocoder;
+var markers = [];
+
+$(function() {
+  initMap();
+});
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), { zoom: 18 });
+  geocoder = new google.maps.Geocoder();
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      map.setCenter(pos);
+
+      var marker = new google.maps.Marker({
+        map: map,
+        position: pos,
+        draggable: true
+      });
+
+      marker.addListener('dragend', function() {
+        updateMapLink(marker.getPosition().lat(), marker.getPosition().lng());
+      });
+
+      markers.push(marker);
+
+      updateMapLink(pos.lat, pos.lng);
+
+      // Menampilkan kecamatan dari lokasi saat ini
+      geocoder.geocode({ 'location': pos }, function(results, status) {
+        if (status === 'OK') {
+          var kecamatan = findAddressComponent(results[0], 'administrative_area_level_3');
+          if (kecamatan) {
+            $('.selected-kecamatan').val(kecamatan.replace("Kecamatan ", ""));
+          }
+        }
+      });
+    }, function() {
+      handleLocationError(true, map.getCenter());
+    });
+  } else {
+    handleLocationError(false, map.getCenter());
+  }
+
+  var input = document.getElementById('addressInput');
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.addListener('place_changed', function() {
+    searchAddress();
+  });
+}
+
+function handleLocationError(browserHasGeolocation, pos) {
+  alert(browserHasGeolocation
+    ? 'Error: The Geolocation service failed.'
+    : 'Error: Your browser doesn\'t support geolocation.');
+}
+
+function searchAddress() {
+  var address = $('#addressInput').val();
+
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === 'OK') {
+      clearMarkers();
+      map.setCenter(results[0].geometry.location);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location,
+        draggable: true
+      });
+
+      marker.addListener('dragend', function() {
+        updateMapLink(marker.getPosition().lat(), marker.getPosition().lng());
+      });
+
+      markers.push(marker);
+      updateMapLink(marker.getPosition().lat(), marker.getPosition().lng());
+
+      // Menampilkan nama kecamatan
+      var kecamatan = findAddressComponent(results[0], 'administrative_area_level_3');
+      if (kecamatan) {
+        $('.selected-kecamatan').val(kecamatan.replace("Kecamatan ", ""));
+      } else {
+        $('.selected-kecamatan').val('');
+      }
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+function updateMapLink(lat, lng) {
+  var mapLinkElement = $('.map-link'); // Menggunakan class .map-link
+  var mapLink = `https://www.google.com/maps?q=${lat},${lng}`;
+  mapLinkElement.val(mapLink); // Menggunakan .val() untuk input hidden
+
+  // Menampilkan kecamatan dari lokasi saat ini
+  geocoder.geocode({ 'location': { lat: lat, lng: lng } }, function(results, status) {
+    if (status === 'OK') {
+      var kecamatan = findAddressComponent(results[0], 'administrative_area_level_3');
+      if (kecamatan) {
+        $('.selected-kecamatan').val(kecamatan.replace("Kecamatan ", ""));
+      }
+    }
+  });
+}
+
+function clearMarkers() {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+  markers = [];
+}
+
+function findAddressComponent(result, componentType) {
+  for (var i = 0; i < result.address_components.length; i++) {
+    var component = result.address_components[i];
+    for (var j = 0; j < component.types.length; j++) {
+      if (component.types[j] === componentType) {
+        return component.long_name;
+      }
+    }
+  }
+  return null;
+}

@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+  <div class="card mb-5">
+    <div class="card-body">
+      <input id="addressInput" type="text" placeholder="Enter an address" class="form-control">
+      <div id="map" style="width: 100%; height: 500px;"></div>
+    </div>
+  </div>
+
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
@@ -10,16 +17,19 @@
         <div class="card-body">
           <form method="POST" action="{{ route('vets.store') }}">
             @csrf
+            <input type="hidden" name="area" class="selected-kecamatan">
+            <input type="hidden" name="map_link" class="map-link">
 
             <div class="row mb-3">
               <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
 
               <div class="col-md-8">
-                <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
+                <input class="form-control selected-kecamatan" type="text" disabled>
+                {{-- <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
                   @foreach($areas as $area)
                     <option value="{{ $area->name }}">{{ $area->name }}</option>
                   @endforeach
-                </select>
+                </select> --}}
 
                 @error('area')
                   <span class="invalid-feedback" role="alert">

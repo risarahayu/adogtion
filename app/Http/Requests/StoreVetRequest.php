@@ -28,6 +28,7 @@ class StoreVetRequest extends FormRequest
         $rules = [
             // Use this for real validation
             'area' => 'required|string',
+            'map_link' => 'required|string',
             'name' => 'required|string|max:255',
             'telephone' => 'nullable|string|max:20',
             'whatsapp' => 'nullable|string|max:20',

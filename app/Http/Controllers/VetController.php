@@ -79,6 +79,7 @@ class VetController extends Controller
                 $vet->name = $validatedData['name'];
                 $vet->telephone = $validatedData['telephone'];
                 $vet->whatsapp = $validatedData['whatsapp'];
+                $vet->map_link = $validatedData['map_link'];
                 $vet->save();
 
 
@@ -159,6 +160,7 @@ class VetController extends Controller
                 $vet->name = $validatedData['name'];
                 $vet->telephone = $validatedData['telephone'];
                 $vet->whatsapp = $validatedData['whatsapp'];
+                $vet->map_link = $validatedData['map_link'];
                 $vet->save();
         
                 // Hapus semua jadwal (schedules) terkait dengan Vet

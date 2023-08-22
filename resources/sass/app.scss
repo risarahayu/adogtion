@@ -14,10 +14,9 @@ $base-color: #BD1A8D;
 @import '~bootstrap-icons/font/bootstrap-icons';
 @import '~select2/dist/css/select2.css';
 @import '~select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css';
-
 @import '~sweetalert2/src/sweetalert2.scss';
-
 @import "~toastify-js/src/toastify.css";
+@import 'google_map';
 
 // Controllers
 @import 'vets';

@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+  <div class="card mb-5">
+    <div class="card-body">
+      <input id="addressInput" type="text" placeholder="Enter an address" class="form-control">
+      <div id="map" style="width: 100%; height: 500px;"></div>
+    </div>
+  </div>
+
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="d-flex align-items-center h-100">
@@ -13,8 +20,22 @@
               @csrf
               @method('PUT')
               <input type="hidden" name="user_id" value="{{ $user->id }}">
+              <input type="hidden" name="area" class="selected-kecamatan">
+              <input type="hidden" name="map_link" class="map-link">
   
               <fieldset id="fieldset-dog" class="d-block">
+                <div class="row mb-3">
+                  <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
+    
+                  <div class="col-md-8">
+                    <input class="form-control selected-kecamatan" type="text" disabled>
+                    @error('area')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+                </div>
                 <div class="row mb-3">
                   <label for="dog_type" class="col-md-4 col-form-label">{{ __('Dog Type') }}</label>
                   <div class="col-md-8">
@@ -110,46 +131,51 @@
                   </div>
                 </div>
 
-                <button type="button" id="fake-submit" class="btn btn-custom-submit w-100">
-                  {{ __('Submit') }}
-                </button>
-              </fieldset>
-
-              <!-- AREA -->
-              <fieldset id="fieldset-area" class="d-none">
-                <div class="row mb-3">
-                  <label for="map_link" class="col-md-4 col-form-label">{{ __('Map Link') }}</label>
-                  <div class="col-md-8">
-                    <input id="map_link"  value="{{ $strayDog->map_link }}" type="text" class="form-control @error('map_link') is-invalid @enderror" name="map_link" required autocomplete="map_link">
-                    @error('map_link')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="area_id" class="col-md-4 col-form-label">{{ __('Area') }}</label>
-                  <div class="col-md-8">
-                    <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
-                      @foreach($areas as $area)
-                        <option value="{{ $area->id }}" {{ $strayDog->area_id === $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
-                      @endforeach
-                    </select>
-
-                    @error('area')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  </div>
-                </div>
-                <div id="map-container"></div>
                 <button type="submit" class="btn btn-custom-submit w-100">
                   {{ __('Submit') }}
                 </button>
+                {{-- <button type="button" id="fake-submit" class="btn btn-custom-submit w-100">
+                  {{ __('Submit') }}
+                </button> --}}
               </fieldset>
-              </form>
+
+              <!-- AREA -->
+              @if (false)
+                <fieldset id="fieldset-area" class="d-none">
+                  <div class="row mb-3">
+                    <label for="map_link" class="col-md-4 col-form-label">{{ __('Map Link') }}</label>
+                    <div class="col-md-8">
+                      <input id="map_link"  value="{{ $strayDog->map_link }}" type="text" class="form-control @error('map_link') is-invalid @enderror" name="map_link" required autocomplete="map_link">
+                      @error('map_link')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="area_id" class="col-md-4 col-form-label">{{ __('Area') }}</label>
+                    <div class="col-md-8">
+                      <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
+                        @foreach($areas as $area)
+                          <option value="{{ $area->id }}" {{ $strayDog->area_id === $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
+                        @endforeach
+                      </select>
+
+                      @error('area')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+                  </div>
+                  <div id="map-container"></div>
+                  <button type="submit" class="btn btn-custom-submit w-100">
+                    {{ __('Submit') }}
+                  </button>
+                </fieldset>
+              @endif
+            </form>
           </div>
         </div>
       </div>
