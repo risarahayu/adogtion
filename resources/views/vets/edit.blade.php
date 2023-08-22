@@ -2,19 +2,17 @@
 
 @section('content')
 <div class="container">
-  <div class="card mb-5">
-    <div class="card-body">
-      <input id="addressInput" type="text" placeholder="Enter an address" class="form-control">
-      <div id="map" style="width: 100%; height: 500px;"></div>
-    </div>
-  </div>
-  
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
         <div class="card-header">{{ __('Vets') }}</div>
 
         <div class="card-body">
+          <div class="google-map mb-3">
+            <input id="addressInput" type="text" placeholder="Enter an address" class="form-control">
+            <div id="map" style="width: 100%; height: 500px;"></div>
+          </div>
+          
           <form method="POST" action="{{ route('vets.update', ['vet' => $vet->id]) }}">
             @csrf
             @method('PUT')

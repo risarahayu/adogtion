@@ -18,6 +18,9 @@
 
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+  
+  <!-- GOOGLE MAP API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqF9D-owlOuUfEv0hR3s7b_A_7eBFiXYQ&libraries=places&callback=initMap" async defer></script>
 </head>
 <body>
   @include('layouts.nav')
@@ -37,8 +40,5 @@
         toastify("{{ session('flash.type') }}", "{{ session('flash.message') }}");
     </script>
   @endif
-  
-  <!-- GOOGLE MAP API -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqF9D-owlOuUfEv0hR3s7b_A_7eBFiXYQ&libraries=places&callback=initMap" async defer></script>
 </body>
 </html>
