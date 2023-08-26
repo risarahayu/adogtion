@@ -260,7 +260,7 @@
               <h4 class="fw-bold border-bottom border-dark pb-2 vet-title">Vets place</h4>
             @endif
             <div class="card dog-list">
-              <h5 class="card-title bold card-header"><i class="bi bi-geo me-3"></i>{{$vet->name}}</h5>
+              <h5 class="card-title bold card-header"><u><a target="_blank" href="{{ $vet->map_link }}"><i class="bi bi-geo me-3"></i>{{$vet->name}}</a></u></h5>
               <div class="card-body">
                 <div class="row">
                   <div class="col-12">
@@ -513,8 +513,8 @@
               <li><a class="dropdown-item" href="https://wa.me/+6289526902626">Whatsapp Surya </a></li>
               <li><a class="dropdown-item" href="https://wa.me/+6281337422297">Whatsapp Nana</a></li>
             </ul>
-            <span class="fw-semibold pt-5">Ignore this if you want rescue by yourself </span><br>
-            <small class="fs-6 pt-5" style="color:#b41986;">*click <a href="#vets place" style="text-decoration: underline; color:#BD1A8D">rescued button</a> if the dog is already in vet.</small>
+            <span class="fw-semibold">Ignore this if you want rescue by yourself </span><br>
+            <small class="fs-6" style="color:#b41986;">*click <a href="#vets place" style="text-decoration: underline; color:#BD1A8D">rescued button</a> if the dog is already in vet.</small>
           </div>
         </div>
       </div>
