@@ -3,7 +3,7 @@
 @section('content')
 <section>
   <div class="container">
-    <div class="d-flex justify-content-between mt-3 mb-5">
+    <div class="d-flex justify-content-between flex-wrap mt-3 mb-5">
       <div>
         <h1 class="fw-bold">{{ __('Stray Dog List') }}</h1>
         <p>We found <span class="fw-semibold">{{$stray_dogs->count()}} 
@@ -24,15 +24,15 @@
       </form>
       <!-- sort -->
       <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-filter me-2"></i>Filter
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ route('stray_dogs.index') }}">All</a></li>
-              @foreach($area as $areaItem)
-                <li><a class="dropdown-item" href="{{ route('straydogs.sort', ['area_name' => $areaItem->name]) }}">{{ $areaItem->name }}</a></li>
-              @endforeach 
-            </ul>
+        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-filter me-2"></i>Filter
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{{ route('stray_dogs.index') }}">All</a></li>
+          @foreach($area as $areaItem)
+            <li><a class="dropdown-item" href="{{ route('straydogs.sort', ['area_name' => $areaItem->name]) }}">{{ $areaItem->name }}</a></li>
+          @endforeach 
+        </ul>
       </div>
       
     </div>

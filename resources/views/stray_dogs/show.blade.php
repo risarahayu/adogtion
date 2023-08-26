@@ -3,7 +3,7 @@
 @section('content')
   <section>
     <div class="container">
-      <div class="row">
+      <div class="row flex-md-row flex-column-reverse">
         <div class="col-md-6 dog-show">
           <div class="row">
             <div class="col-6">
@@ -95,7 +95,7 @@
         </div>
         <div class="col-md-6 text-center">
           @if(Auth::id()==$stray_dog->user_id)
-            <div class="d-flex justify-content-end" style="gap: 5px;">
+            <div class="mb-5 d-flex justify-content-end" style="gap: 5px;">
               <a type="button" class="btn btn-custom-submit" href="{{ route('stray_dogs.edit', $stray_dog->id) }}"><i class="bi bi-pencil-square me-2"></i>edit</a>
               @if (!$stray_dog->rescue()->exists())
                 <button class="btn btn-danger delete-dog">
@@ -108,7 +108,7 @@
               @endif
             </div>
           @endif
-          <img class="img-fluid p-5" src="{{ asset('images/lets-chat-withus.svg') }}">
+          <img class="img-fluid p-5 d-none d-md-block" src="{{ asset('images/lets-chat-withus.svg') }}">
         </div>
       </div>
     </div>

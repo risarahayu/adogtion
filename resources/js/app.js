@@ -53,9 +53,11 @@ var map;
 var geocoder;
 var markers = [];
 
-$(function() {
-  initMap();
-});
+if ($(".map")[0]){
+  $(function() {
+    initMap();
+  });
+}
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), { zoom: 18 });
