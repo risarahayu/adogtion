@@ -9,11 +9,6 @@
           <div class="card-header">{{ __('Edit Stray Dog') }}</div>
 
           <div class="card-body">
-            <div class="google-map mb-3">
-              <input id="addressInput" type="text" placeholder="Enter your current address" class="form-control">
-              <div id="map" style="width: 100%; height: 500px;"></div>
-            </div>
-
             <form method="POST" action="{{ route('stray_dogs.update', $strayDog->id) }}" enctype="multipart/form-data">
               @csrf
               @method('PUT')
@@ -22,18 +17,6 @@
               <input type="hidden" name="map_link" class="map-link">
   
               <fieldset id="fieldset-dog" class="d-block">
-                <div class="row mb-3">
-                  <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
-    
-                  <div class="col-md-8">
-                    <input class="form-control selected-kecamatan" type="text" disabled>
-                    @error('area')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  </div>
-                </div>
                 <div class="row mb-3">
                   <label for="dog_type" class="col-md-4 col-form-label">{{ __('Dog Type') }}</label>
                   <div class="col-md-8">
@@ -74,7 +57,7 @@
                   <label for="gender" class="col-md-4 col-form-label">{{ __('Gender') }}</label>
                   <div class="col-md-8">
                     <select class="form-select select2 @error('area_id') is-invalid @enderror" name="gender">
-                      <option></option>
+                      <option value=""></option>
                       <option value="male" {{ $strayDog->gender === 'male' ? 'selected' : '' }}>{{ __('Male') }}</option>
                       <option value="female" {{ $strayDog->gender === 'female' ? 'selected' : '' }}>{{ __('Female') }}</option>
                     </select>
@@ -129,50 +112,36 @@
                   </div>
                 </div>
 
-                <button type="submit" class="btn btn-custom-submit w-100">
-                  {{ __('Submit') }}
-                </button>
-                {{-- <button type="button" id="fake-submit" class="btn btn-custom-submit w-100">
+                {{-- <button type="submit" class="btn btn-custom-submit w-100">
                   {{ __('Submit') }}
                 </button> --}}
+                <button type="button" id="fake-submit" class="btn btn-custom-submit w-100">
+                  {{ __('Submit') }}
+                </button>
               </fieldset>
 
               <!-- AREA -->
-              @if (false)
-                <fieldset id="fieldset-area" class="d-none">
-                  <div class="row mb-3">
-                    <label for="map_link" class="col-md-4 col-form-label">{{ __('Map Link') }}</label>
-                    <div class="col-md-8">
-                      <input id="map_link"  value="{{ $strayDog->map_link }}" type="text" class="form-control @error('map_link') is-invalid @enderror" name="map_link" required autocomplete="map_link">
-                      @error('map_link')
-                        <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                        </span>
-                      @enderror
-                    </div>
+              <fieldset id="fieldset-area" class="d-none">
+                <div class="google-map mb-3">
+                  <input id="addressInput" type="text" placeholder="Enter your current address" class="form-control">
+                  <div id="map" style="width: 100%; height: 500px;"></div>
+                </div>
+                <div class="row mb-3">
+                  <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
+    
+                  <div class="col-md-8">
+                    <input class="form-control selected-kecamatan" type="text" disabled>
+                    @error('area')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                   </div>
-                  <div class="row mb-3">
-                    <label for="area_id" class="col-md-4 col-form-label">{{ __('Area') }}</label>
-                    <div class="col-md-8">
-                      <select class="form-select area-select2 @error('area') is-invalid @enderror" name="area">
-                        @foreach($areas as $area)
-                          <option value="{{ $area->id }}" {{ $strayDog->area_id === $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
-                        @endforeach
-                      </select>
-
-                      @error('area')
-                        <span class="invalid-feedback" role="alert">
-                          <strong>{{ $message }}</strong>
-                        </span>
-                      @enderror
-                    </div>
-                  </div>
-                  <div id="map-container"></div>
-                  <button type="submit" class="btn btn-custom-submit w-100">
-                    {{ __('Submit') }}
-                  </button>
-                </fieldset>
-              @endif
+                </div>
+                <button type="submit" class="btn btn-custom-submit w-100">
+                  {{ __('Submit') }}
+                </button>
+              </fieldset>
             </form>
           </div>
         </div>
@@ -192,7 +161,7 @@
   <script>
     $(function() {
       $('#fake-submit').click(function() {
-        var validateFields = $('.form-control, .form-select').not("[type='file'], [name='area_id'], [name='map_link']")
+        var validateFields = $('.form-control, .form-select').not("[name='area_id'], [name='map_link'], #addressInput")
         var allFieldsFilled = validateFields.filter(function() {
           return $(this).val() === '';
         }).length === 0;
@@ -218,26 +187,6 @@
           console.log('Ada field yang belum diisi.');
         }
       });
-      // MAPS
-      // Cek apakah browser mendukung Geolocation API
-      if ("geolocation" in navigator) {
-        // Menggunakan Geolocation API untuk mendapatkan koordinat pengguna
-        navigator.geolocation.getCurrentPosition(function(position) {
-          // Dapatkan koordinat latitude dan longitude pengguna
-          var latitude = position.coords.latitude;
-          var longitude = position.coords.longitude;
-
-          // Buat URL iframe Google Maps dengan koordinat pengguna sebagai pusat peta
-          var mapUrl = "https://maps.google.com/maps?q=" + latitude + "," + longitude + "&output=embed&z=14";
-
-          // Sisipkan iframe Google Maps ke dalam div dengan id "map-container"
-          $("#map-container").html('<iframe width="100%" height="400" frameborder="0" style="border:0" src="' + mapUrl + '"></iframe>');
-          $("#map_link").val(mapUrl);
-        });
-      } else {
-        // Jika Geolocation API tidak didukung oleh browser, Anda dapat menambahkan tindakan alternatif di sini
-        console.log("Geolocation tidak didukung oleh browser.");
-      }
     });
   </script>
 @endsection
