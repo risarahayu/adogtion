@@ -73,10 +73,10 @@ class HomeController extends Controller
             $stray_dogs = $user->strayDogs()->whereDoesntHave('rescue')->get();
         } else if ($status == "adopted") {
             //if there is a record in adopted column
-            $stray_dogs = $user->strayDogs()->where("adopted", true);
-        } else {
+            $stray_dogs = $user->strayDogs()->where("adopted", true)->get();
+        } else if ($status == "rescued") {
             $stray_dogs = $user->strayDogs()->whereHas('rescue', function ($q) use ($status) {
-                $q->where('status', $status);
+                $q->where('status', $status)->where("adopted", false);
             })->get();
         }
 

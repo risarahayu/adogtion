@@ -46,7 +46,7 @@
                         @if($stray_dog->rescue()->exists())
                           {{ ucfirst($stray_dog->rescue->status) }}
                         @else
-                          {{ __('Unrescued') }}
+                          {{ __('Need Rescue') }}
                         @endif
                       </button>
                     </div>

@@ -31,6 +31,6 @@ section#auth-section .auth-form {
 
 @media (max-width: 575.98px) {
   .auth-form {
-    padding: 0 50px !important;
+    padding: 0 20px !important;
   }
 }

@@ -19,7 +19,7 @@
                 <div class="row mb-3">
                   <label for="dog_type" class="col-md-4 col-form-label">{{ __('Dog Type') }}</label>
                   <div class="col-md-8">
-                    <input id="dog_type" type="text" class="form-control @error('dog_type') is-invalid @enderror" name="dog_type" placeholder="Enter dog's type" required autocomplete="dog_type">
+                    <input id="dog_type" type="text" class="form-control @error('dog_type') is-invalid @enderror" name="dog_type" placeholder="Example Bali Street Dog, Kintamani Dog" required autocomplete="dog_type">
                     @error('dog_type')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -31,7 +31,7 @@
                 <div class="row mb-3">
                   <label for="color" class="col-md-4 col-form-label">{{ __('Color') }}</label>
                   <div class="col-md-8">
-                    <input id="color" type="text" class="form-control @error('color') is-invalid @enderror" placeholder="Enter dog's color"  name="color" required autocomplete="color">
+                    <input id="color" type="text" class="form-control @error('color') is-invalid @enderror" placeholder="Example black, brown, white"  name="color" required autocomplete="color">
                     @error('color')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -43,7 +43,7 @@
                 <div class="row mb-3">
                   <label for="temperament" class="col-md-4 col-form-label">{{ __('Temperament') }}</label>
                   <div class="col-md-8">
-                    <input id="temperament" type="text" class="form-control @error('temperament') is-invalid @enderror" name="temperament" placeholder="Enter dog's temprament"  required autocomplete="temperament">
+                    <input id="temperament" type="text" class="form-control @error('temperament') is-invalid @enderror" name="temperament" placeholder="Example friendly, protective"  required autocomplete="temperament">
                     @error('temperament')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

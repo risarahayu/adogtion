@@ -140,13 +140,24 @@ class StrayDogController extends Controller
         // get straydog id from model
         $strayDog = StrayDog::findOrFail($id);
 
+        //get image
+        $images = $strayDog->images;
+        
+
         //check user login 
         $user = auth()->user();
 
         // get area
         $areas = Area::all();
+        foreach ($images as $image) {
+            $filename = $image->filename;
+            // Lakukan sesuatu dengan $filename, seperti mencetaknya menggunakan dd()
+            // dd($filename);
+        };
 
-        return view('stray_dogs.edit', compact('strayDog', 'user', 'areas'));
+        
+
+        return view('stray_dogs.edit', compact('strayDog', 'user', 'areas', 'images','filename'));
     }
 
     /**
@@ -158,6 +169,7 @@ class StrayDogController extends Controller
      */
     public function update(UpdateStrayDogRequest $request, StrayDog $strayDog)
     {        
+        
         DB::transaction(function () use ($request, &$strayDog) {
             // Update area (if necessary)
             $area_name = $request->input('area');
@@ -172,7 +184,7 @@ class StrayDogController extends Controller
                 $newArea->save();
                 $strayDog->area_id = $newArea->id;
             }
-
+            
             // Update other attributes of the StrayDog model
             $strayDog->dog_type = $request->input('dog_type');
             $strayDog->color = $request->input('color');
@@ -181,9 +193,12 @@ class StrayDogController extends Controller
             $strayDog->size = $request->input('size');
             $strayDog->description = $request->input('description');
             $strayDog->save();
-
+            // dd($request);
             // Handle images update (if necessary)
+
             if ($request->hasFile('images')) {
+                // $strayDog->images()->delete();
+
                 foreach ($request->file('images') as $image) {
                     $filename = $image->getClientOriginalName();
                     $path = $image->storeAs('public/stray_dog_images', $filename);

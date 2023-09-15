@@ -1,0 +1,14 @@
+.image-preview {
+  position: relative;
+  display: inline-block;
+}
+
+#preview-image {
+  // max-width: 100%;
+}
+
+#delete-image {
+  position: absolute;
+  top: 5px; /* Atur jarak dari atas */
+  // right: 0px; /* Atur jarak dari kanan */
+}

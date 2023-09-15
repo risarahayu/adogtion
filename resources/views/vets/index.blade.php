@@ -23,9 +23,9 @@
         @foreach($vets->where('area_id', $area->id) as $vet)
           <div class="col-md-4 mb-3">
             <div class="card dog-list">
+              <h5 class="card-title bold card-header"><u><a target="_blank" href="{{ $vet->map_link }}"><i class="bi bi-geo me-3"></i>{{$vet->name}}</a></u></h5>
               <div class="card-body">
                 <div class="row">
-                  <div class="col-12 text-center h5 fw-bold">{{ $vet->name }}</div>
                   <div class="col-12">
                     <div class="d-flex align-items-center" style="gap: 15px;">
                       <i class="bi bi-calendar-event dtl-icon"></i>

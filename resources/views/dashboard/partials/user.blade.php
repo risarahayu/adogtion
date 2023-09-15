@@ -45,14 +45,17 @@
                       @php
                       if($stray_dog->rescue()->exists()) {
                         $status_style = "";
+                        //adoptions is a table
                         if($stray_dog->adoptions()->where('status', 'accepted')->exists()) {
                           $dog_status = "Adopted";
                           $status_style = "background-color: green;";
                         } else {
-                          $dog_status = ucfirst($stray_dog->rescue->status);
+                          
+                          // $dog_status = ucfirst($stray_dog->rescue->status);
+                          $dog_status = "Adoptable";
                         }
                       } elseif(!$stray_dog->rescue()->exists()) {
-                        $dog_status = 'Unrescued';
+                        $dog_status = 'Need Rescue';
                         $status_style = "background-color: orangered;";
                       }
                       @endphp

@@ -1,0 +1,9 @@
+.image-preview {
+  position: relative;
+  display: inline-block;
+}
+
+#delete-image {
+  position: absolute;
+  top: 5px; /* Atur jarak dari atas */
+}

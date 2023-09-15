@@ -29,8 +29,8 @@
         </button>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="{{ route('home') }}">All</a></li>
-          <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'unrescued']) }}">Unrescue</a></li>
-          <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'rescued']) }}">Rescue</a></li>
+          <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'unrescued']) }}">Need Rescue</a></li>
+          <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'rescued']) }}">Adoptable</a></li>
           <li><a class="dropdown-item" href="{{ route('home.sort', ['status' => 'adopted']) }}">Adopted</a></li>
         </ul>
       </div>
