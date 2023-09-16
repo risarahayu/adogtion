@@ -31,7 +31,73 @@ class HomeController extends Controller
         $stray_dogs = $user->strayDogs()->orderByDesc('created_at')->withCount('adoptions')->get();
         // $stray_dogs = StrayDog::all();
         $adoptions = $user->adoptions();
-        return view('dashboard.index', compact('user', 'stray_dogs', 'adoptions'));
+
+        $straydog_posts = StrayDog::select(
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(*) as count')
+        )
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'asc')
+        ->orderBy('month', 'asc')
+        ->get();
+
+        $report_years = StrayDog::select(DB::raw('YEAR(created_at) as year'))
+        ->distinct()
+        ->pluck('year')
+        ->toArray();
+
+        $years = [];
+        $months = [];
+        $counts = [];
+
+        foreach ($straydog_posts as $post) {
+            $years[] = $post->year;
+            $months[] = date("F", mktime(0, 0, 0, $post->month, 1));
+            $counts[] = $post->count;
+        }
+
+        $data = [
+            'years' => $years,
+            'months' => $months,
+            'counts' => $counts,
+        ];
+
+        // Adopted report
+        $straydog_posts_adopt = StrayDog::where('adopted', true)->select(
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(*) as count')
+        )
+        ->groupBy('year', 'month')
+        ->orderBy('year', 'asc')
+        ->orderBy('month', 'asc')
+        ->get();;
+
+        $report_years_adopt = StrayDog::where('adopted', true)->select(DB::raw('YEAR(created_at) as year'))
+        ->distinct()
+        ->pluck('year')
+        ->toArray();
+
+        $years_adopt = [];
+        $months_adopt = [];
+        $counts_adopt = [];
+
+        foreach ($straydog_posts_adopt as $post_adopt) {
+            $years_adopt[] = $post_adopt->year;
+            $months_adopt[] = date("F", mktime(0, 0, 0, $post_adopt->month, 1));
+            $counts_adopt[] = $post_adopt->count;
+        }
+
+        $data_adopt = [
+            'years' => $years_adopt,
+            'months' => $months_adopt,
+            'counts' => $counts_adopt,
+        ];
+        // dd($straydog_posts_adopt);
+        
+        return view('dashboard.index', compact('user', 'stray_dogs', 'adoptions', 'months', 'report_years', 
+        'counts', 'years', 'data','data_adopt', 'report_years_adopt','years_adopt'));
     }
 
     public function search(Request $request)
