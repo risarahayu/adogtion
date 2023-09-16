@@ -149,15 +149,8 @@ class StrayDogController extends Controller
 
         // get area
         $areas = Area::all();
-        foreach ($images as $image) {
-            $filename = $image->filename;
-            // Lakukan sesuatu dengan $filename, seperti mencetaknya menggunakan dd()
-            // dd($filename);
-        };
 
-        
-
-        return view('stray_dogs.edit', compact('strayDog', 'user', 'areas', 'images','filename'));
+        return view('stray_dogs.edit', compact('strayDog', 'user', 'areas', 'images'));
     }
 
     /**
@@ -169,7 +162,6 @@ class StrayDogController extends Controller
      */
     public function update(UpdateStrayDogRequest $request, StrayDog $strayDog)
     {        
-        
         DB::transaction(function () use ($request, &$strayDog) {
             // Update area (if necessary)
             $area_name = $request->input('area');
@@ -195,6 +187,10 @@ class StrayDogController extends Controller
             $strayDog->save();
             // dd($request);
             // Handle images update (if necessary)
+
+            if ($request->input('delete_image')) {
+                $strayDog->images()->delete();
+            }
 
             if ($request->hasFile('images')) {
                 // $strayDog->images()->delete();

@@ -33,7 +33,7 @@ class StoreStrayDogRequest extends FormRequest
             'size' => 'required|string',
             'description' => 'required|string',
             'map_link' => 'nullable|string',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
     }
 }
