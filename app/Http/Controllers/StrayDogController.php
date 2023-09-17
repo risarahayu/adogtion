@@ -214,7 +214,7 @@ class StrayDogController extends Controller
             ]
         ]);
 
-            }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -280,5 +280,11 @@ class StrayDogController extends Controller
 
         // Pass the filtered straydogs and the area to the view
         return view('stray_dogs.index', compact('stray_dogs', 'area','area_name'));
+    }
+
+    public function squad(StrayDog $strayDog)
+    {
+        $stray_dog = $strayDog;
+        return view('stray_dogs.squad', compact('stray_dog'));
     }
 }

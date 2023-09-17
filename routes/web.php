@@ -27,6 +27,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // Stray Dogs
     Route::resource('stray_dogs', 'StrayDogController');
+    Route::get('stray_dogs/{stray_dog}/squad', 'StrayDogController@squad')->name('stray_dogs.squad');
 
     // Rescues
     Route::resource('rescues', 'RescueController');
