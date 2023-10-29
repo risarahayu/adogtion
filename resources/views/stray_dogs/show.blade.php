@@ -154,8 +154,8 @@
         }).then((result) => {
           if (result.isConfirmed) {
             // Arahkan pengguna ke section dengan ID target
-            var targetSectionId = 'section-squad'; // Ganti dengan ID dari section yang diinginkan
-                              $('#' + targetSectionId).get(0).scrollIntoView({ behavior: 'smooth' });
+            // var targetSectionId = 'section-squad';
+            // $('#' + targetSectionId).get(0).scrollIntoView({ behavior: 'smooth' });
             self.parents('form.select-vet').submit();
           }
         })

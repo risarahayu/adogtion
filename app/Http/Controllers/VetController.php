@@ -219,4 +219,12 @@ class VetController extends Controller
             ]);
         }
     }
+
+    public function actived(Vet $vet)
+    {
+        $vet->active = !$vet->active;
+        $vet->save();
+
+        return redirect()->route('vets.index')->with('success', 'Vet has been updated successfully.');
+    }
 }

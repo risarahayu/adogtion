@@ -24,6 +24,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     // Vets
     Route::resource('vets', 'VetController');
+    Route::put('vets/{vet}/activate', 'VetController@actived')->name('vets.activate');
 
     // Stray Dogs
     Route::resource('stray_dogs', 'StrayDogController');
@@ -47,7 +48,6 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/sort/{status}', 'HomeController@sort')->name('home.sort');
 
 });
-
 
 
 // User auth

@@ -119,11 +119,11 @@ class StrayDogController extends Controller
             $vets[] = $rescueVet;
         } else {
             $vets = Vet::whereHas('area', function ($query) use ($stray_dog) {
-                $query->where('id', $stray_dog->area_id);
+                $query->where([['id', $stray_dog->area_id], ['active', true]]);
             })->get();
 
             if ($vets->isEmpty()) {
-                $vets = Vet::all();
+                $vets = Vet::where('active', true)->get();
             }
         }
         return view('stray_dogs.show', compact('user', 'stray_dog', 'vets', 'own'));

@@ -22,8 +22,15 @@
         <h4 class="fw-bold border-bottom border-dark pb-2">{{ ucfirst($area->name) }}</h4>
         @foreach($vets->where('area_id', $area->id) as $vet)
           <div class="col-md-4 mb-3">
-            <div class="card dog-list">
-              <h5 class="card-title bold card-header"><u><a target="_blank" href="{{ $vet->map_link }}"><i class="bi bi-geo me-3"></i>{{$vet->name}}</a></u></h5>
+            <div class="card dog-list @if(!$vet->active) bg-secondary-subtle @endif">
+              <h5 class="card-title bold card-header">
+                <u><a target="_blank" href="{{ $vet->map_link }}"><i class="bi bi-geo me-3"></i>{{$vet->name}}</a></u>
+                <form action="{{ route('vets.activate', $vet->id) }}" method="POST" class="float-end">
+                  @csrf
+                  @method('PUT')
+                  <button class="border border-0 bg-transparent" type="submit"><i class="bi bi-eye-slash"></i></button>
+                </form>
+              </h5>
               <div class="card-body">
                 <div class="row">
                   <div class="col-12">
