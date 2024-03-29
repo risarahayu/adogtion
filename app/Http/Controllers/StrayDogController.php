@@ -162,6 +162,7 @@ class StrayDogController extends Controller
      */
     public function update(UpdateStrayDogRequest $request, StrayDog $strayDog)
     {        
+        
         DB::transaction(function () use ($request, &$strayDog) {
             // Update area (if necessary)
             $area_name = $request->input('area');

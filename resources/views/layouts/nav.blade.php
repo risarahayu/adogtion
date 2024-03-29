@@ -57,6 +57,15 @@
               <a class="dropdown-item" href="{{ route('user_contacts.create') }}">
                 {{ __('My Contact') }}
               </a>
+              @if (session('role') == 'rescuer')
+                <a class="dropdown-item" href="{{ route('role.set', ['role' => 'adopter']) }}">
+                  {{ __('Change to adopter') }}
+                </a>
+              @else
+                <a class="dropdown-item" href="{{ route('role.set', ['role' => 'rescuer']) }}">
+                  {{ __('Change to rescuer') }}
+                </a>
+              @endif
               <a class="dropdown-item" href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">

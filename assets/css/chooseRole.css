@@ -1,0 +1,23 @@
+.background {
+  background-color: #BD1A8D;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.btn-custom-role {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  width: -webkit-fill-available;
+}
+
+.btn-custom-role:hover {
+  background-color: white;
+  color: black; /* Warna teks sesuai kebutuhan saat dihover */
+}

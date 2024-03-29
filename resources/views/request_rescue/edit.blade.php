@@ -9,7 +9,7 @@
           <div class="card-header">{{ __('Edit Stray Dog') }}</div>
 
           <div class="card-body">
-            <form method="POST" action="{{ route('stray_dogs.update', $strayDog->id) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('request_rescue.update', $strayDog->id) }}" enctype="multipart/form-data">
               @csrf
               @method('PUT')
               <input type="hidden" name="user_id" value="{{ $user->id }}">
@@ -148,15 +148,11 @@
 
               <!-- AREA -->
               <fieldset id="fieldset-area" class="d-none">
-                <div class="google-map mb-3">
-                  <input id="addressInput" type="text" placeholder="Enter your current address" class="form-control">
-                  <div id="map" style="width: 100%; height: 500px;"></div>
-                </div>
                 <div class="row mb-3">
                   <label for="area" class="col-md-4 col-form-label">{{ __('Area') }}</label>
     
                   <div class="col-md-8">
-                    <input class="form-control selected-kecamatan" type="text" disabled>
+                    <input class="form-control selected-kecamatan" type="text" name="area" value="{{ $strayDog->area->name }}">
                     @error('area')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -184,7 +180,7 @@
 @endsection
 
 @section('scripts')
-  <script type="module">
+  <script>
     $(function() {
       // FAKE SUBMIT
       $('#fake-submit').click(function() {

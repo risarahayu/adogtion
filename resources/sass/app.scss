@@ -6,9 +6,6 @@ $base-color: #BD1A8D;
 
 // Variables
 @import 'variables';
-@import 'auth';
-@import 'footer';
-@import 'straydog';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -21,7 +18,10 @@ $base-color: #BD1A8D;
 
 // Controllers
 @import 'vets';
-
+@import 'auth';
+@import 'footer';
+@import 'straydog';
+@import 'chooseRole';
 
 .color-mp { color: $base-color; }
 

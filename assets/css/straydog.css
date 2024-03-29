@@ -3,7 +3,14 @@
   display: inline-block;
 }
 
-#delete-image {
+.preview-image {
+  max-width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.btn-delete-images {
   position: absolute;
-  top: 5px; /* Atur jarak dari atas */
+  top: 0;
+  right: 0;
 }

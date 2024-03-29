@@ -19,6 +19,19 @@ Route::get('/', function () { return redirect()->route('login'); });
 
 
 Route::namespace('App\Http\Controllers')->group(function () {
+
+
+
+    //Rescue Request
+    Route::resource('request_rescue', RequestRescueController::class);
+    
+
+    //Choose Role
+    Route::get('/role/{role}', 'RoleController@set_role')->name('role.set');
+    Route::get('/role', 'HomeController@choose_role');
+
+
+    Route::get('/switch-role/{role}', SwitchRoleController::class)->name('switch.role');
     // Dashboard
     Route::get('/home', 'HomeController@index')->name('home');
 

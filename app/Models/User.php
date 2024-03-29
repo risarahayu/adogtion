@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'administrator',
+        'name', 'email', 'password', 'administrator','current_role_id'
     ];
 
     /**
@@ -62,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rescue::class);
     }
+
+    // public function currentRole(): BelongsTo
+    // {
+    //     return $this->belongsTo(Role::class, 'current_role_id');
+    // }
 }

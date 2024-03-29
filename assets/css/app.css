@@ -11858,7 +11858,9 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
-}xl-5 {
+}important;
+  }
+  .column-gap-xxl-5 {
     column-gap: 3rem !important;
   }
   .text-xxl-start {

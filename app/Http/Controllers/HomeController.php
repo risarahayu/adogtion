@@ -154,5 +154,10 @@ class HomeController extends Controller
         // Pass the filtered straydogs and the area to the view
         return view('dashboard.index', compact('stray_dogs', 'adoptions','user'));
     }
+    
+
+    public function choose_role(){
+        return view('layouts.choose_role');
+    }
 
 }
